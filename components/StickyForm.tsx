@@ -10,89 +10,72 @@ export default function StickyForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-
     if (!name) return toast.error("Name is required")
     if (!email.includes("@")) return toast.error("Invalid email")
     if (phone.length !== 10) return toast.error("Enter 10 digit phone number")
 
-    const whatsappNumber = "918237311365"
-    const message = `Hi, I want to enquire about Mantra Burgundy Series.
+    const whatsappNumber = "919657119798"
+    const message = `Hi, I want to enquire about Vyom Sigma Avinea Hadapsar.
 Name: ${name}
 Email: ${email}
 Phone: ${phone}`
 
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-      message
-    )}`
-
-    window.location.href = whatsappUrl
+    window.location.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
   }
 
   const handleMobileEnquire = () => {
-    const whatsappNumber = "918237311365"
-    const message = "Hi, I want to enquire about Mantra Burgundy Series."
-
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-      message
-    )}`
-
-    window.location.href = whatsappUrl
+    window.location.href = `https://wa.me/919657119798?text=${encodeURIComponent("Hi, I want to enquire about Vyom Sigma Avinea Hadapsar.")}`
   }
 
   return (
     <>
-      {/* Desktop form - Professional white/blue theme */}
+      {/* Compact Desktop Form */}
       <div className="hidden lg:block fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-md shadow-2xl border-t border-slate-200/50 z-[9999]">
         <div className="max-w-screen-xl mx-auto px-4">
-          <form
-            className="flex flex-wrap items-center gap-4 py-6"
-            onSubmit={handleSubmit}
-          >
-            <span className="font-semibold text-slate-900 text-lg">
-              Enquire Now
-            </span>
-
+          <form className="flex items-center gap-2 py-2" onSubmit={handleSubmit}>
+            <span className="font-semibold text-slate-900 text-sm whitespace-nowrap">Enquire:</span>
+            
             <input
               type="text"
-              placeholder="Name*"
+              placeholder="Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="flex-1 min-w-[160px] bg-slate-50/50 border-b-2 border-slate-200 focus:border-blue-500 focus:bg-white px-3 py-2 text-slate-900 placeholder-slate-500 transition-all duration-300 outline-none rounded-md hover:bg-white"
+              className="flex-1 min-w-[120px] h-8 bg-slate-50/50 border border-slate-200 focus:border-blue-500 focus:bg-white px-2 text-xs text-slate-900 placeholder-slate-500 rounded transition-all outline-none"
             />
-
+            
             <input
               type="email"
-              placeholder="Email*"
+              placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 min-w-[160px] bg-slate-50/50 border-b-2 border-slate-200 focus:border-blue-500 focus:bg-white px-3 py-2 text-slate-900 placeholder-slate-500 transition-all duration-300 outline-none rounded-md hover:bg-white"
+              className="flex-1 min-w-[120px] h-8 bg-slate-50/50 border border-slate-200 focus:border-blue-500 focus:bg-white px-2 text-xs text-slate-900 placeholder-slate-500 rounded transition-all outline-none"
             />
-
+            
             <input
               type="tel"
-              placeholder="Phone*"
+              placeholder="Phone"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="flex-1 min-w-[160px] bg-slate-50/50 border-b-2 border-slate-200 focus:border-blue-500 focus:bg-white px-3 py-2 text-slate-900 placeholder-slate-500 transition-all duration-300 outline-none rounded-md hover:bg-white"
+              className="w-20 h-8 bg-slate-50/50 border border-slate-200 focus:border-blue-500 focus:bg-white px-2 text-xs text-slate-900 rounded transition-all outline-none"
             />
-
+            
             <button
               type="submit"
-              className="bg-slate-900 hover:bg-slate-800 active:bg-slate-700 text-white px-8 py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 text-sm"
+              className="bg-slate-900 hover:bg-slate-800 text-white px-4 h-8 rounded font-semibold text-xs shadow hover:shadow-md transition-all whitespace-nowrap"
             >
-              Enquire Now
+              Send
             </button>
           </form>
         </div>
       </div>
 
-      {/* Mobile: Blue enquire button */}
+      {/* Ultra-compact Mobile Button */}
       <div className="block lg:hidden fixed bottom-0 left-0 w-full z-[9999] shadow-2xl">
         <button
           onClick={handleMobileEnquire}
-          className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 active:from-blue-800 active:to-blue-900 text-white py-4 text-center font-semibold text-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 border-t-4 border-blue-500/30"
+          className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-2.5 text-center font-semibold text-sm shadow-lg hover:shadow-xl transition-all border-t-2 border-blue-500/50"
         >
-          📱 Enquire Now
+          📱 Quick Enquiry
         </button>
       </div>
     </>

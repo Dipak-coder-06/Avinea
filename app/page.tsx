@@ -65,10 +65,7 @@ export default function Home() {
           <section id="gallery">
             <GallerySection />
           </section>
-          
-          <section id="location">
-            <LocationSection />
-          </section>
+        
         </main>
         
         <Footer />

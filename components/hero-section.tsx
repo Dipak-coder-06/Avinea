@@ -78,7 +78,7 @@ export default function HeroSection() {
           </a>
 
           <a
-            href="https://wa.me/8237311365?text=Schedule%20me%20a%20Tour%20for%20burgundy%20series"
+            href="https://wa.me/9657119798?text=Schedule%20me%20a%20Tour%20for%20Avinea%20Hadpsar"
             target="_blank"
             rel="noopener noreferrer"
           >

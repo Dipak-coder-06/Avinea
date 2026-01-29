@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useEffect, useContext, useRef } from "react"
-import { X, Info, Phone, Mail, User, IndianRupee } from "lucide-react"
+import { X, Info, Phone, Mail, User, IndianRupee, Sparkle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -26,7 +26,6 @@ export default function DiscountPopup({ isSubmitted, setIsSubmitted }: isSubmitP
   const [showTooltip, setShowTooltip] = useState(false)
   const { setAuthenticated } = useContext(context)
   const recaptchaRef = useRef<ReCAPTCHA>(null)
-
   const [isTransitioning, setIsTransitioning] = useState(false)
 
   useEffect(() => {
@@ -92,57 +91,60 @@ export default function DiscountPopup({ isSubmitted, setIsSubmitted }: isSubmitP
   if (isSubmitted || !isVisible) return null
 
   const modalClasses = `
-    bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl w-full max-w-[95vw] sm:max-w-xl md:max-w-4xl relative border border-slate-200/50 
+    bg-gradient-to-br from-white to-slate-50/90 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-[95vw] sm:max-w-xl md:max-w-4xl relative border border-white/60 
     flex flex-col md:flex-row 
-    transform transition-all duration-300 ease-out
+    transform transition-all duration-500 ease-out
     ${isTransitioning ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}
+    before:content-[''] before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-r 
+    before:from-blue-500/10 before:to-purple-500/10 before:backdrop-blur-sm before:shadow-inner
   `
+  
   const overlayClasses = `
-    fixed inset-0 min-h-screen bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-2 xs:p-4 
-    transition-opacity duration-300
+    fixed inset-0 min-h-screen bg-gradient-to-br from-slate-900/75 to-black/60 backdrop-blur-md z-50 flex items-center justify-center p-2 xs:p-4 
+    transition-all duration-500 ease-out
     ${isTransitioning ? 'opacity-100' : 'opacity-0'}
   `
 
+  const closeBtnClasses = "group fixed top-6 right-6 z-[99] p-3 rounded-2xl bg-white/95 hover:bg-white/100 backdrop-blur-xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 active:scale-95 border border-slate-200/70 hover:border-slate-300 md:absolute md:top-3 md:right-3 md:z-10"
+
   return (
-    <div
-      className={overlayClasses}
-      onClick={handleClose}
-    >
-      <div
-        className={modalClasses}
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className={overlayClasses} onClick={handleClose}>
+      <div className={modalClasses} onClick={(e) => e.stopPropagation()}>
         <button
           onClick={handleClose}
-          className="fixed top-6 right-6 z-[99] p-2 rounded-full bg-white/90 hover:bg-slate-50 transition-all shadow-lg hover:shadow-xl md:absolute md:top-3 md:right-3 md:z-10 border border-slate-200/50"
+          className={closeBtnClasses}
         >
-          <X className="w-5 h-5 text-slate-700" />
+          <X className="w-6 h-6 text-slate-700 group-hover:text-slate-900 transition-all duration-200" />
         </button>
 
         {/* Modal Content */}
         <div className="flex-1 h-full overflow-y-auto max-h-[90vh] flex flex-col md:flex-row">
           {/* Info Tooltip */}
-          <div className="absolute top-3 left-3 z-20">
+          <div className="absolute top-4 left-4 z-20">
             <div
               onMouseEnter={() => setShowTooltip(true)}
               onMouseLeave={() => setShowTooltip(false)}
               onClick={() => setShowTooltip((prev) => !prev)}
-              className="relative"
+              className="group relative"
             >
-              <div className="p-2 rounded-full bg-white/90 hover:bg-slate-50 shadow-md cursor-pointer transition-all border border-slate-200/50">
-                <Info className="w-5 h-5 text-slate-700" />
+              <div className="p-3 rounded-2xl bg-white/95 hover:bg-white/100 shadow-xl hover:shadow-2xl backdrop-blur-xl cursor-pointer 
+              transition-all duration-300 group-hover:scale-110 hover:-translate-y-1 border border-slate-200/70 hover:border-slate-300">
+                <Info className="w-5 h-5 text-slate-700 group-hover:text-slate-900 transition-colors" />
               </div>
 
               {showTooltip && (
-                <div className="absolute top-10 left-0 w-64 sm:w-72 bg-white border border-slate-200 rounded-xl shadow-2xl p-3 sm:p-4 text-sm text-slate-700 z-30 backdrop-blur-sm">
-                  <h4 className="font-semibold text-slate-900 mb-2">Terms & Conditions</h4>
-                  <ul className="list-disc pl-4 space-y-1 text-xs sm:text-sm">
-                    <li>Enjoy an additional guaranteed privilege — your instant discount code applies over and above the final lowest offer price confirmed after your site visit.</li>
-                    <li>Valid for 7 days from the date you receive this message</li>
-                    <li>Use the code on the top right-hand side, or mention it to reception during your site visit</li>
-                    <li>This is a unique & personalised code only for you</li>
-                    <li>If your visit plan changes, inform us — we'll revise or reissue the code accordingly</li>
-                    <li>Feel free to connect for any assistance</li>
+                <div className="absolute top-14 left-0 w-72 bg-white/98 border border-slate-200/70 backdrop-blur-xl rounded-2xl shadow-2xl 
+                p-5 text-sm text-slate-700 z-30 animate-pulse">
+                  <div className="absolute -top-2 left-4 w-4 h-4 bg-white/98 rotate-45 border-b border-r border-slate-200/70"></div>
+                  <h4 className="font-bold text-lg text-slate-900 mb-3 flex items-center gap-2">
+                    📋 Terms & Conditions
+                  </h4>
+                  <ul className="list-disc pl-5 space-y-2 text-xs leading-relaxed">
+                    <li className="text-emerald-700 font-medium">• Instant discount over final lowest price</li>
+                    <li className="text-emerald-700 font-medium">• Valid 7 days from receipt</li>
+                    <li className="text-emerald-700 font-medium">• Use code or mention at reception</li>
+                    <li className="text-emerald-700 font-medium">• Unique code only for you</li>
+                    <li className="text-emerald-700 font-medium">• Flexible - inform us of changes</li>
                   </ul>
                 </div>
               )}
@@ -150,116 +152,157 @@ export default function DiscountPopup({ isSubmitted, setIsSubmitted }: isSubmitP
           </div>
 
           {/* Left Side - Form */}
-          <div className="flex-1 p-3 sm:p-6 md:p-8 flex flex-col justify-center order-2 md:order-1">
+          <div className="flex-1 p-6 sm:p-8 md:p-10 flex flex-col justify-center order-2 md:order-1 bg-gradient-to-b from-white/90 to-white/70">
             <div className="max-w-sm mx-auto w-full">
-              <div className="text-center mb-4 sm:mb-6 md:mb-8">
-                <h2 className="text-lg sm:text-2xl md:text-3xl font-bold text-slate-900 mb-1 sm:mb-2">
-                  Exclusive Offer
+              <div className="text-center mb-8">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 
+                bg-clip-text text-transparent mb-3 drop-shadow-lg">
+                  🎉 Exclusive Offer
                 </h2>
-                <p className="text-slate-600 text-xs sm:text-sm md:text-base">
-                  Grab your coupon code here
+                <p className="text-slate-600 text-sm sm:text-base font-semibold bg-gradient-to-r from-slate-500 to-slate-600 bg-clip-text">
+                  Secure your <span className="font-black text-blue-600">personalized</span> coupon code
                 </p>
               </div>
-              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 md:space-y-6">
+              
+              <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Name Field */}
-                <div>
-                  <Label htmlFor="name" className="text-xs sm:text-sm font-semibold text-slate-900 mb-1 block">
-                    Name *
+                <div className="group">
+                  <Label htmlFor="name" className="text-sm font-bold text-slate-900 mb-2 block flex items-center gap-2">
+                    <User className="w-4 h-4 text-blue-500 shrink-0" />
+                    Full Name *
                   </Label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 
+                    group-focus-within:text-blue-500 transition-all duration-200" />
                     <Input
                       id="name"
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="Enter your name"
-                      className="pl-8 sm:pl-10 h-10 sm:h-11 md:h-12 border-slate-200 focus:border-blue-500 focus:ring-blue-500/20 text-slate-900 placeholder-slate-500 bg-white/50 backdrop-blur-sm w-full transition-all duration-300 hover:border-slate-300"
+                      placeholder="Enter your full name"
+                      className="pl-12 h-14 text-lg border-2 border-slate-200/70 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 
+                      text-slate-900 placeholder-slate-400 bg-white/80 backdrop-blur-sm w-full transition-all duration-300 
+                      hover:border-slate-300 hover:shadow-lg rounded-2xl font-semibold shadow-sm"
                       autoComplete="name"
                     />
                   </div>
-                  {errors.name && <p className="text-red-500 text-xs sm:text-sm mt-1 font-medium">{errors.name}</p>}
+                  {errors.name && <p className="text-red-500 text-sm mt-2 font-semibold flex items-center gap-2">{errors.name}</p>}
                 </div>
+
                 {/* Email Field */}
-                <div>
-                  <Label htmlFor="email" className="text-xs sm:text-sm font-semibold text-slate-900 mb-1 block">
-                    Email *
+                <div className="group">
+                  <Label htmlFor="email" className="text-sm font-bold text-slate-900 mb-2 block flex items-center gap-2">
+                    <Mail className="w-4 h-4 text-emerald-500 shrink-0" />
+                    Email Address *
                   </Label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 
+                    group-focus-within:text-emerald-500 transition-all duration-200" />
                     <Input
                       id="email"
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Enter your email"
-                      className="pl-8 sm:pl-10 h-10 sm:h-11 md:h-12 border-slate-200 focus:border-blue-500 focus:ring-blue-500/20 text-slate-900 placeholder-slate-500 bg-white/50 backdrop-blur-sm w-full transition-all duration-300 hover:border-slate-300"
+                      placeholder="your.email@example.com"
+                      className="pl-12 h-14 text-lg border-2 border-slate-200/70 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 
+                      text-slate-900 placeholder-slate-400 bg-white/80 backdrop-blur-sm w-full transition-all duration-300 
+                      hover:border-slate-300 hover:shadow-lg rounded-2xl font-semibold shadow-sm"
                       autoComplete="email"
                     />
                   </div>
-                  {errors.email && <p className="text-red-500 text-xs sm:text-sm mt-1 font-medium">{errors.email}</p>}
+                  {errors.email && <p className="text-red-500 text-sm mt-2 font-semibold flex items-center gap-2">{errors.email}</p>}
                 </div>
+
                 {/* Phone Field */}
-                <div>
-                  <Label htmlFor="phone" className="text-xs sm:text-sm font-semibold text-slate-900 mb-1 block">
+                <div className="group">
+                  <Label htmlFor="phone" className="text-sm font-bold text-slate-900 mb-2 block flex items-center gap-2">
+                    <Phone className="w-4 h-4 text-orange-500 shrink-0" />
                     Phone Number *
                   </Label>
                   <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 
+                    group-focus-within:text-orange-500 transition-all duration-200" />
                     <Input
                       id="phone"
                       type="tel"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      placeholder="Enter your phone number"
-                      className="pl-8 sm:pl-10 h-10 sm:h-11 md:h-12 border-slate-200 focus:border-blue-500 focus:ring-blue-500/20 text-slate-900 placeholder-slate-500 bg-white/50 backdrop-blur-sm w-full transition-all duration-300 hover:border-slate-300"
+                      placeholder="10 digit mobile number"
+                      className="pl-12 h-14 text-lg border-2 border-slate-200/70 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 
+                      text-slate-900 placeholder-slate-400 bg-white/80 backdrop-blur-sm w-full transition-all duration-300 
+                      hover:border-slate-300 hover:shadow-lg rounded-2xl font-semibold shadow-sm"
                       maxLength={10}
                       autoComplete="tel"
                     />
                   </div>
-                  {errors.phone && <p className="text-red-500 text-xs sm:text-sm mt-1 font-medium">{errors.phone}</p>}
+                  {errors.phone && <p className="text-red-500 text-sm mt-2 font-semibold flex items-center gap-2">{errors.phone}</p>}
                 </div>
 
-                {/* reCAPTCHA */}
-                <div>
-                  <ReCAPTCHA
-                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
-                    ref={recaptchaRef}
-                  />
-                  {errors.recaptcha && <p className="text-red-500 text-xs sm:text-sm mt-1 font-medium">{errors.recaptcha}</p>}
+                {/* 🔥 FIXED reCAPTCHA - ONLY THIS CHANGED */}
+                <div className="pt-1 relative z-[9999] p-4 bg-white rounded-xl shadow-xl border">
+                  <ReCAPTCHA sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""} ref={recaptchaRef} />
                 </div>
+                {errors.recaptcha && <p className="text-red-500 text-sm mt-2 font-semibold flex items-center gap-2">{errors.recaptcha}</p>}
 
                 {/* Submit Button */}
                 <Button
                   type="submit"
-                  className="w-full h-10 sm:h-11 md:h-12 bg-slate-900 hover:bg-slate-800 active:bg-slate-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 border-0"
+                  className="w-full h-14 text-xl font-black bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 
+                  hover:from-slate-800 hover:via-blue-800 hover:to-slate-800 hover:shadow-2xl hover:-translate-y-1 
+                  active:bg-slate-700 active:translate-y-0 shadow-xl transition-all duration-300 text-white rounded-2xl ring-4 ring-transparent 
+                  hover:ring-blue-500/30 backdrop-blur-sm flex items-center justify-center gap-2"
                 >
-                  Get in Touch
+                  ✨ Get Your Offer
                 </Button>
               </form>
             </div>
           </div>
 
           {/* Right Side - Offer Section */}
-          <div className="flex-1 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 relative overflow-y-auto order-1 md:order-2 h-56 sm:h-72 md:h-auto rounded-2xl shadow-2xl">
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/30 to-transparent"></div>
-            <div className="relative h-full flex flex-col items-center justify-start md:justify-center p-4 sm:p-6 md:p-10 text-white text-left">
-              <h3 className="text-base sm:text-xl md:text-2xl font-bold mb-4 sm:mb-6 text-blue-300 drop-shadow-md">
-                We Promise
+          <div className="flex-1 bg-gradient-to-br from-slate-900 via-blue-900/95 to-slate-900 relative overflow-y-auto order-1 md:order-2 
+          h-64 sm:h-80 md:h-auto rounded-3xl shadow-2xl before:absolute before:inset-0 before:bg-gradient-to-t 
+          before:from-slate-900/40 before:to-transparent before:rounded-3xl before:backdrop-blur-sm">
+            <div className="relative h-full flex flex-col items-center justify-center p-8 sm:p-10 md:p-12 text-white">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-black mb-8 bg-gradient-to-r from-blue-300 via-white to-emerald-300 
+              bg-clip-text text-transparent drop-shadow-2xl tracking-tight">
+                Our Promise
               </h3>
-              <div className="space-y-3 sm:space-y-6">
-                <p className="flex items-center text-xs sm:text-sm md:text-base leading-relaxed drop-shadow-sm">
-                  <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-blue-300 mr-2 sm:mr-3 shrink-0" />
-                  Instant Call Back
-                </p>
-                <p className="flex items-center text-xs sm:text-sm md:text-base leading-relaxed drop-shadow-sm">
-                  <User className="w-4 h-4 sm:w-5 sm:h-5 text-blue-300 mr-2 sm:mr-3 shrink-0" />
-                  Free Site Visit
-                </p>
-                <p className="flex items-center text-xs sm:text-sm md:text-base leading-relaxed drop-shadow-sm">
-                  <IndianRupee className="w-4 h-4 sm:w-5 sm:h-5 text-blue-300 mr-2 sm:mr-3 shrink-0" />
-                  Lowest Price Guaranteed
-                </p>
+              <div className="space-y-6 w-full max-w-sm">
+                <div className="group flex items-center p-6 bg-white/10 backdrop-blur-xl rounded-2xl hover:bg-white/20 
+                hover:shadow-2xl hover:-translate-y-2 transition-all duration-400 border border-white/30">
+                  <div className="w-16 h-16 bg-blue-500/20 backdrop-blur-xl rounded-2xl flex items-center justify-center mr-4 
+                  shrink-0 border-2 border-blue-400/50 group-hover:scale-110 group-hover:border-blue-300">
+                    <Phone className="w-8 h-8 text-blue-300" />
+                  </div>
+                  <div>
+                    <p className="text-xl font-bold text-white mb-1 group-hover:text-blue-300">Instant Callback</p>
+                    <p className="text-blue-100 text-sm font-medium">Within 5 minutes</p>
+                  </div>
+                </div>
+
+                <div className="group flex items-center p-6 bg-white/10 backdrop-blur-xl rounded-2xl hover:bg-white/20 
+                hover:shadow-2xl hover:-translate-y-2 transition-all duration-400 border border-white/30">
+                  <div className="w-16 h-16 bg-emerald-500/20 backdrop-blur-xl rounded-2xl flex items-center justify-center mr-4 
+                  shrink-0 border-2 border-emerald-400/50 group-hover:scale-110 group-hover:border-emerald-300">
+                    <User className="w-8 h-8 text-emerald-300" />
+                  </div>
+                  <div>
+                    <p className="text-xl font-bold text-white mb-1 group-hover:text-emerald-300">Free Site Visit</p>
+                    <p className="text-blue-100 text-sm font-medium">Premium transport included</p>
+                  </div>
+                </div>
+
+                <div className="group flex items-center p-6 bg-white/10 backdrop-blur-xl rounded-2xl hover:bg-white/20 
+                hover:shadow-2xl hover:-translate-y-2 transition-all duration-400 border border-white/30">
+                  <div className="w-16 h-16 bg-orange-500/20 backdrop-blur-xl rounded-2xl flex items-center justify-center mr-4 
+                  shrink-0 border-2 border-orange-400/50 group-hover:scale-110 group-hover:border-orange-300">
+                    <IndianRupee className="w-8 h-8 text-orange-300" />
+                  </div>
+                  <div>
+                    <p className="text-xl font-bold text-white mb-1 group-hover:text-orange-300">Lowest Price</p>
+                    <p className="text-blue-100 text-sm font-medium">Guaranteed best offer</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

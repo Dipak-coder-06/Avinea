@@ -1,231 +1,365 @@
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Star, MapPin, Building2, Calendar, Home, Download, Check, Sparkles } from "lucide-react"
+import { Star, MapPin, Building2, Calendar, Home, Download, CreditCard, Percent, Clock, Check } from "lucide-react"
 
 export default function PropertyDetails() {
   const projectData = {
-    name: "Vyom Sigma Avinea Hadapsar",
-    developer: "",
+    name: "Avinea By Vyom-Sigma Buildzone Hadapsar",
+    developer: "Vyom Sigma Buildzone",
     location: "Hadapsar, Pune",
     rating: 4.8,
-    reviews: 109,
-    bookingAmount: "5 Lacs",
-    priceStart: "1.29* Cr",
+    reviews: 156,
+    bookingAmount: "2 Lacs",
+    priceStart: "₹1.29 Cr*",
+    towers: "7 Towers (T1-T7)",
+    acres: "10.5 Acres"
   }
 
   const keyStats = [
-    
+    {
+      icon: Building2,
+      label: "Scale",
+      value: `${projectData.acres} Premium Acres`,
+    },
     {
       icon: Home,
-      label: "Floors",
-      value: "3B+G+2P+37",
+      label: "Structure", 
+      value: "G+5P+32 Storeys",
+    },
+    {
+      icon: Building2,
+      label: "Towers",
+      value: projectData.towers,
     },
     {
       icon: Calendar,
       label: "Possession",
-      value: "December 2029",
-    },
+      value: "Dec 2028",
+    }
   ]
 
   const configurations = [
-    { bhk: "2 BHK", area: "946 - 960 sq.ft", price: "1.29 - 1.31Cr onwards" },
-    { bhk: "3 BHK", area: "1213 - 1262 sq.ft", price: "1.69 - 1.76 Cr onwards" },
-    { bhk: "4 BHK", area: "1780 sq.ft", price: "2.42Cr onwards" },
+    { 
+      bhk: "2 BHK", 
+      carpet: "946 sq.ft", 
+      price: "₹1.29 - 1.31 Cr*", 
+      type: "Premium"
+    },
+    { 
+      bhk: "3 BHK", 
+      carpet: "1213 - 1262 sq.ft", 
+      price: "₹1.69 - 1.76 Cr*", 
+      type: "Luxury"
+    },
+    { 
+      bhk: "4 BHK", 
+      carpet: "1780 sq.ft", 
+      price: "₹2.42 Cr*", 
+      type: "Ultra-Luxury"
+    },
+    { 
+      bhk: "5 BHK", 
+      carpet: "2500 sq.ft", 
+      price: "₹3.45 Cr*", 
+      type: "Penthouse"
+    },
+    { 
+      bhk: "5.5 BHK Jodi", 
+      carpet: "Up to 2500+ sq.ft", 
+      price: "₹3.45 Cr+*", 
+      type: "Couplet"
+    }
+  ]
+
+  const towers = [
+    { 
+      name: "T1 - Avalon", 
+      status: "Yet to Launch",
+      statusColor: "bg-gradient-to-r from-orange-500/10 to-orange-400/10 text-orange-800 border-orange-200/50",
+      phase: "Phase 3"
+    },
+    { 
+      name: "T2 - Avante", 
+      status: "Yet to Launch",
+      statusColor: "bg-gradient-to-r from-orange-500/10 to-orange-400/10 text-orange-800 border-orange-200/50",
+      phase: "Phase 3"
+    },
+    { 
+      name: "T3 - Altus", 
+      status: "3 BHK Selling Fast",
+      statusColor: "bg-gradient-to-r from-emerald-500/10 to-emerald-400/10 text-emerald-800 border-emerald-200/50",
+      phase: "Phase 1"
+    },
+    { 
+      name: "T4 - Amore", 
+      status: "2 BHK Sold Out",
+      statusColor: "bg-gradient-to-r from-red-500/10 to-red-400/10 text-red-800 border-red-200/50",
+      phase: "Phase 1"
+    },
+    { 
+      name: "T5 - Ariana", 
+      status: "Now Open",
+      statusColor: "bg-gradient-to-r from-blue-500/10 to-blue-400/10 text-blue-800 border-blue-200/50",
+      phase: "Phase 2"
+    },
+    { 
+      name: "T6 - Avana", 
+      status: "Now Open",
+      statusColor: "bg-gradient-to-r from-blue-500/10 to-blue-400/10 text-blue-800 border-blue-200/50",
+      phase: "Phase 2"
+    },
+    { 
+      name: "T7 - Altair", 
+      status: "Now Open",
+      statusColor: "bg-gradient-to-r from-blue-500/10 to-blue-400/10 text-blue-800 border-blue-200/50",
+      phase: "Phase 2"
+    }
   ]
 
   const paymentPlans = [
     {
-      name: "Flexible Payment Plan",
-      structure: "Custom payment options",
-      details: "Tailored to your financial needs",
-    },
-    {
       name: "30:70 Payment Plan",
-      structure: "30% Down | 70% on Possession",
-      details: "Mantra Burgundy's signature flexible plan",
+      icon: Percent,
     },
     {
-      name: "95:05 Payment Plan",
-      structure: "95% on Possession | 5% Booking",
-      details: "Maximum down payment flexibility",
+      name: "95:05 Down Payment Plan",
+      icon: CreditCard,
     },
+  
   ]
 
-  const whatsappLink =
-    "https://wa.me/919657119798?text=" +
-    encodeURIComponent("Send me Brochure of Vyom Sigma Avinea Hadapsar , Pune")
+  const whatsappNumber = "919657119798"
+
+  const getTowerWhatsappLink = (towerName) => {
+    const message = encodeURIComponent(`Hi, I am interested in ${towerName}. Please share brochure, floor plans & current offers.`);
+    return `https://wa.me/${whatsappNumber}?text=${message}`;
+  }
+
+  const getPaymentPlanWhatsappLink = (planName) => {
+    const message = encodeURIComponent(`Hi, interested in ${planName} for Avinea Hadapsar. Please share complete payment plan details & current offers.`);
+    return `https://wa.me/${whatsappNumber}?text=${message}`;
+  }
+
+  const whatsappLink = "https://wa.me/" + whatsappNumber + "?text=" + 
+    encodeURIComponent(`Hi, interested in Vyom Sigma Avinea Hadapsar. Please share brochure, floor plans & current offers for ${projectData.location}`);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/50">
-      {/* HEADER - Enhanced Glass Effect */}
-      <div className="border-b border-slate-200/50 bg-white/80 backdrop-blur-xl relative overflow-hidden shadow-xl">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-white/20 to-blue-500/5 -skew-x-12 opacity-0 group-hover:opacity-100 transition-all duration-1000 -translate-x-full"></div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
+      {/* HEADER */}
+      <div className="border-b border-slate-200/50 bg-white/80 backdrop-blur-xl shadow-xl relative overflow-hidden">
         <div className="mx-auto max-w-7xl px-6 py-20 sm:px-8">
           <div className="space-y-8">
             <div className="group">
-              <h1 className="text-5xl md:text-6xl font-serif font-black bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 bg-clip-text text-transparent leading-tight group-hover:drop-shadow-2xl transition-all duration-700">
+              <h1 className="text-5xl md:text-6xl font-serif font-black bg-gradient-to-r from-slate-900 via-emerald-900 to-slate-900 bg-clip-text text-transparent leading-tight">
                 {projectData.name}
               </h1>
-              <p className="mt-4 text-xl text-slate-600 font-semibold bg-slate-100/50 px-4 py-2 rounded-full inline-block animate-pulse">
-                {projectData.developer}
-              </p>
+              <Badge className="mt-4 text-lg bg-emerald-100 text-emerald-800 border-emerald-200 font-semibold px-6 py-2">
+                {projectData.developer} 
+                <span className="ml-2 text-xs">(Vyom Buildcon + Sigma Buildzone)</span>
+              </Badge>
             </div>
 
             <div className="flex flex-wrap items-center gap-8">
-              <div className="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-500/10 to-blue-400/10 rounded-2xl group hover:bg-blue-500/20 transition-all duration-500 shadow-xl hover:shadow-2xl border border-blue-200/50 hover:scale-105">
-                <MapPin className="h-6 w-6 text-blue-500 group-hover:animate-bounce group-hover:scale-110 transition-all" />
+              <div className="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-emerald-500/10 to-emerald-400/10 rounded-2xl shadow-xl border border-emerald-200/50 hover:scale-105 transition-all">
+                <MapPin className="h-6 w-6 text-emerald-500 animate-bounce" />
                 <span className="text-xl font-bold text-slate-900">{projectData.location}</span>
               </div>
-              <div className="flex items-center gap-3 px-6 py-3 bg-white/60 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-200/50 group hover:shadow-3xl hover:-translate-y-1 transition-all duration-500">
+              <div className="flex items-center gap-3 px-6 py-3 bg-white/60 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-200/50 hover:shadow-3xl">
                 <div className="flex gap-1">
                   {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`h-5 w-5 transition-all duration-500 ${
-                        i < Math.floor(projectData.rating)
-                          ? "fill-blue-500 text-blue-500 drop-shadow-lg animate-pulse"
-                          : "text-slate-400"
-                      }`}
-                    />
+                    <Star key={i} className={`h-5 w-5 ${i < Math.floor(projectData.rating) ? "fill-emerald-500 text-emerald-500" : "text-slate-400"}`} />
                   ))}
                 </div>
-                <span className="font-black text-xl text-slate-900">
-                  {projectData.rating}
-                </span>
-                <span className="text-lg font-semibold text-slate-600 ml-1">
-                  ({projectData.reviews}+ Reviews)
-                </span>
+                <span className="font-black text-xl text-slate-900">{projectData.rating}</span>
+                <span className="text-lg font-semibold text-slate-600">({projectData.reviews}+ Reviews)</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-6 py-20 sm:px-8">
-        {/* Key Metrics Section - GLASSMORPHISM CARDS */}
-        <div className="mb-20 relative group">
-          <div className="absolute inset-0 border-4 border-dashed border-blue-200/80 rounded-3xl -m-6 pointer-events-none z-0 animate-pulse"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-white/30 to-blue-500/20 rounded-3xl blur-3xl opacity-0 group-hover:opacity-100 transition-all duration-1000 -m-12"></div>
-          <h2 className="text-4xl md:text-5xl font-serif font-black bg-gradient-to-r from-slate-900 to-blue-900 bg-clip-text text-transparent mb-12 relative z-10 group-hover:scale-105 transition-all duration-700 drop-shadow-2xl">
-            Project Highlights ✨
+      <div className="mx-auto max-w-7xl px-6 py-20 sm:px-8 space-y-20">
+        
+        {/* PROJECT HIGHLIGHTS */}
+        <section className="relative group">
+          <h2 className="text-4xl md:text-5xl font-serif font-black bg-gradient-to-r from-slate-900 to-emerald-900 bg-clip-text text-transparent mb-12">
+            Project Highlights
           </h2>
-          <div className="grid gap-8 sm:grid-cols-3 relative z-10">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {keyStats.map((stat, idx) => {
               const IconComponent = stat.icon
               return (
-                <Card
-                  key={idx}
-                  className="border border-slate-200/50 bg-white/70 backdrop-blur-xl p-10 hover:border-blue-500/70 hover:shadow-3xl hover:-translate-y-6 transition-all duration-1000 relative z-10 group/card overflow-hidden rounded-3xl shadow-2xl"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 via-white/40 to-blue-500/30 -skew-x-12 opacity-0 group-hover/card:opacity-100 transition-all duration-1500 -translate-x-full group-hover/card:translate-x-full rounded-3xl blur-sm"></div>
-                  <div className="flex flex-col gap-6 relative z-10">
-                    <div className="rounded-2xl bg-gradient-to-r from-blue-500/20 to-blue-400/20 w-fit p-5 group-hover/card:scale-125 transition-all duration-700 hover:rotate-6 shadow-2xl border border-blue-200/50">
-                      <IconComponent className="h-10 w-10 text-blue-500 drop-shadow-lg group-hover/card:animate-bounce group-hover/card:scale-110 transition-all duration-500" />
+                <Card key={idx} className="group/card p-8 border-emerald-200/50 bg-white/70 backdrop-blur-xl hover:shadow-3xl hover:-translate-y-4 rounded-2xl shadow-xl border hover:border-emerald-400/70 transition-all duration-700">
+                  <div className="flex flex-col items-center gap-4 text-center">
+                    <div className="w-16 h-16 bg-gradient-to-r from-emerald-500/20 to-emerald-400/20 rounded-2xl flex items-center justify-center group-hover/card:scale-110 transition-all">
+                      <IconComponent className="h-8 w-8 text-emerald-500" />
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-slate-600 uppercase tracking-widest animate-pulse bg-slate-100/50 px-3 py-1 rounded-full inline-block">
-                        {stat.label}
-                      </p>
-                      <p className="mt-4 text-4xl md:text-5xl font-black bg-gradient-to-r from-slate-900 to-blue-900 bg-clip-text text-transparent group-hover/card:drop-shadow-2xl transition-all duration-700">
-                        {stat.value}
-                      </p>
+                      <p className="text-xs font-bold text-emerald-600 uppercase tracking-wider">{stat.label}</p>
+                      <p className="text-3xl font-black text-slate-900 mt-2">{stat.value}</p>
                     </div>
                   </div>
                 </Card>
               )
             })}
           </div>
-        </div>
+        </section>
 
-        {/* 🔥 EYE-CATCHING PRICING HERO SECTION 🔥 */}
-        <div className="mb-20 relative group">
-          {/* Multi-layered borders with enhanced glow */}
-          <div className="absolute inset-0 border-8 border-dashed border-blue-200/90 rounded-3xl -m-4 pointer-events-none z-10 animate-pulse"></div>
-          <div className="absolute inset-0 border-4 border-dashed border-blue-500/70 rounded-3xl -m-2 pointer-events-none z-20 animate-ping [animation-duration:2s]"></div>
-          <div className="absolute inset-0 border-2 border-dashed border-white/80 rounded-3xl -m-1 pointer-events-none z-25 animate-pulse [animation-delay:-1s]"></div>
-          
-          {/* Dynamic shine effects */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12 opacity-0 group-hover:opacity-100 transition-all duration-1500 -translate-x-full group-hover:translate-x-full rounded-3xl z-30 blur-sm"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 via-white/60 to-blue-500/30 rounded-3xl blur-xl opacity-20 group-hover:opacity-50 transition-all duration-1000 z-25"></div>
+        {/* CONFIGURATIONS */}
+        <section className="relative group">
+          <h2 className="text-4xl md:text-5xl font-serif font-black bg-gradient-to-r from-slate-900 to-emerald-900 bg-clip-text text-transparent mb-12">
+            Configurations
+          </h2>
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {configurations.map((config, idx) => (
+              <Card key={idx} className="group p-8 border-emerald-200/50 hover:shadow-3xl hover:-translate-y-3 rounded-2xl shadow-xl border hover:border-emerald-400/70 transition-all duration-700 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-emerald-400/5 -skew-x-12 opacity-0 group-hover:opacity-100 transition-all duration-1000 -translate-x-full group-hover:translate-x-full" />
+                <div className="relative z-10 space-y-4">
+                  <Badge className="bg-gradient-to-r from-emerald-500/20 to-emerald-400/20 text-emerald-700 border-emerald-200 font-bold">
+                    {config.type}
+                  </Badge>
+                  <h3 className="text-2xl font-black text-slate-900">{config.bhk}</h3>
+                  <p className="text-3xl font-black bg-gradient-to-r from-slate-900 to-emerald-900 bg-clip-text text-transparent">
+                    {config.price}
+                  </p>
+                  <p className="text-lg text-slate-600 font-medium">{config.carpet}</p>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </section>
 
-          <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-blue-900/90 to-slate-900/80 backdrop-blur-xl text-white relative overflow-hidden z-40 shadow-3xl group-hover:shadow-[0_35px_100px_-15px_rgba(59,130,246,0.5)] transition-all duration-1000 hover:-translate-y-4">
-            
-            {/* 🔥 GLOWING HEADER BAR */}
-            <div className="relative w-full text-center text-sm md:text-lg font-black tracking-widest py-6 bg-gradient-to-r from-slate-800/90 to-blue-900/90 shadow-2xl rounded-3xl border-4 border-dashed border-blue-400/50 overflow-hidden group">
-              <div className="absolute inset-0 border-3 border-dashed border-white/90 rounded-3xl -m-px pointer-events-none animate-pulse [animation-duration:1.5s]"></div>
+        {/* PRICING HERO WITH PAYMENT PLANS */}
+        <section className="relative group">
+          <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-emerald-900/90 to-slate-900/80 backdrop-blur-xl text-white shadow-3xl overflow-hidden">
+            <div className="p-12 lg:p-20 relative z-10">
+              <div className="text-center mb-16">
+                <div className="inline-flex items-center gap-3 bg-white/20 backdrop-blur-xl px-8 py-4 rounded-3xl border-2 border-white/40 mb-8">
+                  <Check className="h-6 w-6 text-emerald-300 animate-pulse" />
+                  <span className="text-xl font-black tracking-widest">BOOKING STARTS AT</span>
+                </div>
+                <h2 className="text-5xl md:text-7xl lg:text-8xl font-black bg-gradient-to-r from-emerald-400 via-white to-emerald-500 bg-clip-text text-transparent drop-shadow-4xl mb-6">
+                  {projectData.bookingAmount}
+                </h2>
+                <p className="text-2xl font-bold text-emerald-100 mb-12">Special Launch Offers Available</p>
+              </div>
               
-              {/* Triple shine sweep */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent -skew-x-12 opacity-0 group-hover:opacity-100 transition-all duration-2000 -translate-x-full group-hover:translate-x-full rounded-3xl blur-sm"></div>
-              <div className="absolute inset-0 bg-gradient-to-l from-transparent via-white/40 to-transparent -skew-x-12 opacity-0 group-hover:opacity-100 transition-all duration-2500 delay-1000 -translate-x-full group-hover:translate-x-full rounded-3xl"></div>
-              
-              <div className="relative z-10 px-8">
-                <div className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-400/40 via-white/50 to-blue-400/40 px-8 py-4 rounded-3xl border-3 border-white/70 backdrop-blur-xl shadow-3xl group-hover:scale-110 transition-all duration-700">
-                  <Sparkles className="h-6 w-6 text-blue-300 animate-spin drop-shadow-lg" />
-                  <span className="text-lg md:text-xl font-black tracking-widest text-white/95 drop-shadow-2xl">BOOKING AMOUNT</span>
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div className="lg:col-span-2">
+                  <p className="text-4xl md:text-6xl font-black bg-gradient-to-r from-emerald-400 via-white to-emerald-500 bg-clip-text text-transparent">
+                    {projectData.priceStart} Onwards
+                  </p>
+                  <p className="text-lg text-emerald-200 mt-2">2, 3, 4 & 5 BHK Homes</p>
+                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="block mt-8 group">
+                    <button className="group/btn flex items-center gap-4 bg-white text-slate-900 px-12 py-6 text-xl font-black rounded-3xl shadow-4xl hover:shadow-[0_25px_80px_rgba(16,185,129,0.6)] hover:-translate-y-2 transition-all duration-700 border-4 border-white/50 backdrop-blur-xl w-full md:w-auto justify-center">
+                      <Download className="h-6 w-6 group-hover/btn:rotate-180 transition-all" />
+                      Download Brochure
+                    </button>
+                  </a>
                 </div>
                 
-                <p className="mt-6 text-3xl md:text-5xl lg:text-6xl font-black tracking-widest bg-gradient-to-r from-blue-400 via-white to-blue-500 bg-clip-text text-transparent drop-shadow-4xl animate-bounce [animation-duration:1.5s]">
-                  ₹5 LACS ONLY
-                </p>
-                
-                <p className="mt-3 text-lg font-bold text-blue-100/95 tracking-wider animate-pulse bg-white/20 px-6 py-3 rounded-2xl inline-block backdrop-blur-sm border border-white/40 shadow-xl">
-                  Special Offers On Spot Booking* 
-                </p>
-              </div>
-            </div>
-
-            {/* ✨ CONTENT SECTION */}
-            <div className="m-10 rounded-3xl border-6 border-dashed border-white/70 px-10 py-12 relative z-10 group/inner backdrop-blur-xl">
-              <div className="absolute -inset-4 bg-gradient-to-r from-blue-400/50 via-white/90 to-blue-400/50 rounded-3xl blur-3xl opacity-50 animate-pulse"></div>
-              
-              <p className="text-center text-3xl md:text-4xl lg:text-5xl font-black leading-tight tracking-widest mb-12 relative z-20 group-hover/inner:scale-105 transition-all duration-1000 bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent drop-shadow-2xl">
-                VYOM SIGMA AVINEA HADAPSAR
-                <span className="block text-5xl md:text-6xl lg:text-7xl font-serif bg-gradient-to-r from-blue-400 to-white bg-clip-text text-transparent animate-pulse drop-shadow-4xl"></span>
-              </p>
-              
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12 relative z-20">
-                <div className="group/item text-center p-8 bg-white/20 backdrop-blur-xl rounded-3xl border-2 border-white/50 shadow-2xl hover:shadow-4xl hover:scale-110 hover:rotate-2 transition-all duration-700 hover:bg-white/40">
-                  <p className="text-sm font-black uppercase tracking-widest mb-4 text-blue-200 drop-shadow-lg">PAYMENT PLAN</p>
-                  <p className="text-4xl md:text-5xl font-black text-white drop-shadow-2xl animate-pulse bg-gradient-to-r from-blue-400 to-white bg-clip-text text-transparent">30:70</p>
+                {/* Payment Plans in Hero */}
+                <div className="space-y-4 lg:col-span-2">
+                  <h3 className="text-2xl font-black tracking-wider text-emerald-100 uppercase mb-6 flex items-center gap-3">
+                    <CreditCard className="h-7 w-7" />
+                    Flexible Payment Plans
+                  </h3>
+                  <div className="space-y-3">
+                    {paymentPlans.map((plan, idx) => {
+                      const IconComponent = plan.icon
+                      return (
+                        <a 
+                          key={idx}
+                          href={getPaymentPlanWhatsappLink(plan.name)}
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="group flex items-center gap-4 p-4 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/30 hover:bg-white/20 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+                        >
+                          <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <IconComponent className="h-6 w-6 text-emerald-200" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="font-bold text-lg text-white group-hover:text-emerald-100 transition-colors">
+                              {plan.name}
+                            </div>
+                            <div className="text-emerald-100 text-sm font-medium">{plan.description}</div>
+                          </div>
+                          <Check className="h-5 w-5 text-emerald-300 group-hover:animate-bounce transition-all" />
+                        </a>
+                      )
+                    })}
+                  </div>
                 </div>
-                <div className="group/item text-center p-8 bg-white/20 backdrop-blur-xl rounded-3xl border-2 border-white/50 shadow-2xl hover:shadow-4xl hover:scale-110 hover:-rotate-2 transition-all duration-700 hover:bg-white/40">
-                  <p className="text-sm font-black uppercase tracking-widest mb-4 text-blue-200 drop-shadow-lg">DOWN PAYMENT PLAN</p>
-                  <p className="text-4xl md:text-5xl font-black text-white drop-shadow-2xl animate-pulse bg-gradient-to-r from-blue-400 to-white bg-clip-text text-transparent">95:05</p>
-                </div>
-              </div>
-            </div>
-
-            {/* 🚀 ULTIMATE CTA SECTION */}
-            <div className="relative px-10 pb-10 pt-8 group/cta">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-2 bg-gradient-to-r from-blue-400 to-white rounded-full opacity-90 animate-pulse shadow-2xl"></div>
-              
-              <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-                <div className="text-center lg:text-left group/cta">
-                  <p className="text-lg font-black tracking-widest uppercase mb-6 text-blue-200 animate-pulse bg-white/30 px-8 py-4 rounded-3xl inline-block backdrop-blur-sm border border-white/50 shadow-xl">
-                    Luxurious 2, 3, 4 BHK
-                  </p>
-                  <p className="text-4xl md:text-6xl lg:text-7xl font-black bg-gradient-to-r from-blue-400 via-white to-blue-500 bg-clip-text text-transparent drop-shadow-4xl group-hover/cta:scale-110 transition-all duration-700">
-                    ₹{projectData.priceStart} <span className="text-2xl font-normal block mt-4 text-white/90">Onwards</span>
-                  </p>
-                </div>
-
-                <a
-                  href={whatsappLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full lg:w-auto group-hover:scale-110 transition-all duration-500 relative z-20"
-                >
-                  <button className="group/btn w-full lg:w-auto flex items-center justify-center gap-4 rounded-3xl bg-gradient-to-r from-white via-slate-50 to-blue-50 text-slate-900 px-12 py-8 text-xl font-black shadow-4xl hover:shadow-[0_25px_80px_-10px_rgba(59,130,246,0.6)] hover:-translate-y-4 transition-all duration-1000 border-4 border-white/60 backdrop-blur-xl relative overflow-hidden transform-gpu">
-                    <Download className="h-8 w-8 group-hover/btn:rotate-180 group-hover/btn:scale-125 transition-all duration-1000 drop-shadow-2xl" />
-                    <span className="relative z-10 drop-shadow-2xl tracking-widest">Download Brochure</span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-400/40 via-white/60 to-blue-400/40 rounded-3xl -skew-x-12 opacity-0 group-hover/btn:opacity-100 transition-all duration-1500 -translate-x-full group-hover/btn:translate-x-full blur-sm"></div>
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/40 via-white/50 to-blue-500/40 rounded-3xl opacity-0 group-hover/btn:opacity-100 transition-all duration-1000 blur"></div>
-                  </button>
-                </a>
               </div>
             </div>
           </div>
-        </div>
+        </section>
+
+        {/* TOWERS GRID - Clean Professional NO Icons/Emojis */}
+        <section>
+          <h2 className="text-4xl md:text-5xl font-serif font-black bg-gradient-to-r from-slate-900 to-emerald-900 bg-clip-text text-transparent mb-12 text-center">
+            Tower Status & Phases
+          </h2>
+          <div className="max-w-6xl mx-auto space-y-12">
+            {/* First Row - 4 Towers */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 justify-items-center">
+              {towers.slice(0, 4).map((tower, idx) => (
+                <a 
+                  key={`first-row-${idx}`}
+                  href={getTowerWhatsappLink(tower.name)}
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-full max-w-xs group"
+                >
+                  <Card className="p-8 text-center border-0 bg-gradient-to-b from-white/95 to-slate-50/80 backdrop-blur-xl h-full max-h-80 hover:shadow-2xl hover:shadow-emerald-500/25 hover:border-emerald-300/50 hover:-translate-y-2 transition-all duration-500 cursor-pointer rounded-3xl shadow-xl border border-slate-200/50">
+                    <div className="h-full flex flex-col justify-center space-y-6">
+                      <div className="space-y-3">
+                        <h3 className="text-2xl font-black bg-gradient-to-r from-slate-900 to-emerald-900 bg-clip-text text-transparent group-hover:scale-105 transition-all">
+                          {tower.name}
+                        </h3>
+                        <div className="text-xs font-bold text-emerald-600 uppercase tracking-widest bg-emerald-50/80 px-4 py-2 rounded-full inline-block shadow-sm">
+                          {tower.phase}
+                        </div>
+                      </div>
+                      <Badge className={`w-full font-bold text-base px-6 py-4 shadow-xl border-2 bg-white/90 backdrop-blur-xl ${tower.statusColor} hover:shadow-emerald-500/20 transition-all group-hover:scale-[1.02] group-hover:shadow-2xl`}>
+                        <span className="font-semibold leading-tight">{tower.status}</span>
+                      </Badge>
+                    </div>
+                  </Card>
+                </a>
+              ))}
+            </div>
+
+            {/* Second Row - 3 Towers Center Aligned */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center mx-auto" style={{ maxWidth: '700px' }}>
+              {towers.slice(4, 7).map((tower, idx) => (
+                <a 
+                  key={`second-row-${idx}`}
+                  href={getTowerWhatsappLink(tower.name)}
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-full max-w-xs group"
+                >
+                  <Card className="p-8 text-center border-0 bg-gradient-to-b from-white/95 to-slate-50/80 backdrop-blur-xl h-full max-h-80 hover:shadow-2xl hover:shadow-emerald-500/25 hover:border-emerald-300/50 hover:-translate-y-2 transition-all duration-500 cursor-pointer rounded-3xl shadow-xl border border-slate-200/50">
+                    <div className="h-full flex flex-col justify-center space-y-6">
+                      <div className="space-y-3">
+                        <h3 className="text-2xl font-black bg-gradient-to-r from-slate-900 to-emerald-900 bg-clip-text text-transparent group-hover:scale-105 transition-all">
+                          {tower.name}
+                        </h3>
+                        <div className="text-xs font-bold text-emerald-600 uppercase tracking-widest bg-emerald-50/80 px-4 py-2 rounded-full inline-block shadow-sm">
+                          {tower.phase}
+                        </div>
+                      </div>
+                      <Badge className={`w-full font-bold text-base px-6 py-4 shadow-xl border-2 bg-white/90 backdrop-blur-xl ${tower.statusColor} hover:shadow-emerald-500/20 transition-all group-hover:scale-[1.02] group-hover:shadow-2xl`}>
+                        <span className="font-semibold leading-tight">{tower.status}</span>
+                      </Badge>
+                    </div>
+                  </Card>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   )

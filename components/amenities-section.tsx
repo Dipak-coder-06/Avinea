@@ -1,3 +1,5 @@
+"use client"
+import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import {
   Waves,
@@ -8,6 +10,10 @@ import {
   Coffee,
   TreePine,
   Users,
+  ChevronDown,
+  ChevronUp,
+  Table,
+  LayoutList,
 } from "lucide-react"
 
 const amenities = [
@@ -53,8 +59,33 @@ const amenities = [
   },
 ]
 
+const externalAmenitiesTable = [
+  "55+ amenities including multi-sport complex, swimming pools, yoga hall, kids' play area",
+  "Eco-friendly environment with green spaces, sewage treatment plant, rainwater harvesting",
+  "Clubhouse with party lawn and banquet facilities",
+  "Children-centric features: music rooms, adventure parks, kids' play fountains",
+  "Multiple dining options: grill & dine café, BBQ court",
+  "1 km perimeter walking path",
+  "Large landscaped gardens and outdoor exercise stations",
+  "Well-connected to schools, shopping malls, hospitals, IT parks"
+]
+
+const internalFeaturesTable = [
+  "Mi-van construction technology ensuring eco-friendly, sustainable homes",
+  "Spacious, 3-side open flats",
+  "Rainwater harvesting and renewable energy generation",
+  "High-quality finishes: vitrified tiles, modular kitchens, branded bathroom fittings",
+  "Advanced electrical systems: inverter provision, internet provision, smart home options",
+  "24/7 security with CCTV surveillance and biometric locks",
+  "DG backup for common areas"
+]
+
 export default function AmenitiesSection() {
   const whatsappNumber = "919657119798"
+  
+  // State for expandable tables
+  const [externalExpanded, setExternalExpanded] = useState(false)
+  const [internalExpanded, setInternalExpanded] = useState(false)
 
   return (
     <section
@@ -77,7 +108,7 @@ export default function AmenitiesSection() {
           </p>
         </div>
 
-        {/* Amenities Grid */}
+        {/* Amenities Grid - UNCHANGED */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {amenities.map((amenity) => {
             const id = amenity.title.toLowerCase().replace(/\s+/g, "-")
@@ -115,7 +146,112 @@ export default function AmenitiesSection() {
           })}
         </div>
 
-        {/* Call to Action */}
+        {/* External and Internal Amenities Tables - Side by Side */}
+        <div className="mt-20 grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* External Amenities Table */}
+          <div>
+            <div className="flex items-center justify-center mb-8">
+              <Table className="w-6 h-6 mr-2 text-primary" />
+              <h3 className="text-3xl font-bold text-center text-balance">
+                External Amenities
+              </h3>
+            </div>
+            
+            <Card className="overflow-hidden h-full">
+              <CardContent className="p-0 h-full flex flex-col">
+                <div className="overflow-x-auto flex-1">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="bg-primary/5 border-b border-border">
+                        <th className="text-left p-6 font-semibold text-card-foreground">
+                          Features
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {externalAmenitiesTable.slice(0, externalExpanded ? externalAmenitiesTable.length : 4).map((feature, index) => (
+                        <tr key={index} className="border-b border-border/50 hover:bg-muted/50 transition-colors">
+                          <td className="p-6 text-sm leading-relaxed text-muted-foreground">
+                            • {feature}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                
+                <div className="p-6 border-t border-border bg-muted/30">
+                  <button
+                    onClick={() => setExternalExpanded(!externalExpanded)}
+                    className="flex items-center justify-center gap-2 text-primary font-medium hover:text-primary/80 transition-colors group w-full"
+                    aria-expanded={externalExpanded}
+                    aria-controls="external-table"
+                  >
+                    {externalExpanded ? "Read Less" : "Read More"}
+                    {externalExpanded ? (
+                      <ChevronUp className="w-4 h-4 group-hover:-translate-y-1 transition-transform" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
+                    )}
+                  </button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Internal Features Table */}
+          <div>
+            <div className="flex items-center justify-center mb-8">
+              <LayoutList className="w-6 h-6 mr-2 text-primary" />
+              <h3 className="text-3xl font-bold text-center text-balance">
+                Internal Features
+              </h3>
+            </div>
+            
+            <Card className="overflow-hidden h-full">
+              <CardContent className="p-0 h-full flex flex-col">
+                <div className="overflow-x-auto flex-1">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="bg-primary/5 border-b border-border">
+                        <th className="text-left p-6 font-semibold text-card-foreground">
+                          Premium Specifications
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {internalFeaturesTable.slice(0, internalExpanded ? internalFeaturesTable.length : 4).map((feature, index) => (
+                        <tr key={index} className="border-b border-border/50 hover:bg-muted/50 transition-colors">
+                          <td className="p-6 text-sm leading-relaxed text-muted-foreground">
+                            • {feature}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                
+                <div className="p-6 border-t border-border bg-muted/30">
+                  <button
+                    onClick={() => setInternalExpanded(!internalExpanded)}
+                    className="flex items-center justify-center gap-2 text-primary font-medium hover:text-primary/80 transition-colors group w-full"
+                    aria-expanded={internalExpanded}
+                    aria-controls="internal-table"
+                  >
+                    {internalExpanded ? "Read Less" : "Read More"}
+                    {internalExpanded ? (
+                      <ChevronUp className="w-4 h-4 group-hover:-translate-y-1 transition-transform" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
+                    )}
+                  </button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Call to Action - UNCHANGED */}
         <div className="text-center mt-16">
           <div className="bg-card rounded-2xl p-8 max-w-2xl mx-auto border">
             <h3 className="text-2xl font-bold text-card-foreground mb-4">
@@ -128,7 +264,7 @@ export default function AmenitiesSection() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href={`https://wa.me/${whatsappNumber}?text=Schedule%20me%20tour%20of%Avinea%20Project`}
+                href={`https://wa.me/${whatsappNumber}?text=Schedule%20me%20tour%20of%20Avinea%20Project`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Schedule a tour through WhatsApp"
