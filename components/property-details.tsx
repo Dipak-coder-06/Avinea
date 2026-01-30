@@ -11,7 +11,7 @@ export default function PropertyDetails() {
     reviews: 156,
     bookingAmount: "2 Lacs",
     priceStart: "₹1.29 Cr*",
-    towers: "7 Towers (T1-T7)",
+    towers: "7  Towers",
     acres: "10.5 Acres"
   }
 
@@ -19,12 +19,12 @@ export default function PropertyDetails() {
     {
       icon: Building2,
       label: "Scale",
-      value: `${projectData.acres} Premium Acres`,
+      value: `${projectData.acres}`,
     },
     {
       icon: Home,
       label: "Structure", 
-      value: "G+5P+32 Storeys",
+      value: "G+5P+Podium +28 +Terrace",
     },
     {
       icon: Building2,
@@ -34,7 +34,7 @@ export default function PropertyDetails() {
     {
       icon: Calendar,
       label: "Possession",
-      value: "Dec 2028",
+      value: "Dec 2028 Onwards",
     }
   ]
 
@@ -42,7 +42,7 @@ export default function PropertyDetails() {
     { 
       bhk: "2 BHK", 
       carpet: "946 sq.ft", 
-      price: "₹1.29 - 1.31 Cr*", 
+      price: "₹1.29 Cr* Onwards", 
       type: "Premium"
     },
     { 
@@ -56,12 +56,6 @@ export default function PropertyDetails() {
       carpet: "1780 sq.ft", 
       price: "₹2.42 Cr*", 
       type: "Ultra-Luxury"
-    },
-    { 
-      bhk: "5 BHK", 
-      carpet: "2500 sq.ft", 
-      price: "₹3.45 Cr*", 
-      type: "Penthouse"
     },
     { 
       bhk: "5.5 BHK Jodi", 
@@ -122,7 +116,7 @@ export default function PropertyDetails() {
       icon: Percent,
     },
     {
-      name: "95:05 Down Payment Plan",
+      name: "05:95 Flexi Payment",
       icon: CreditCard,
     },
   

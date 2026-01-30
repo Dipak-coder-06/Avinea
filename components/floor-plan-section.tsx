@@ -37,7 +37,7 @@ const floorPlans: Array<floorPlan> = [
     price: "₹1.29 Cr - ₹1.31 Cr",
     image: "/plan01.jpg",
     carParks: 1,
-    features: ["In Hadapsar, Pune", "Masterful engineering"],
+    features: ["In Hadapsar, Pune", "Masterful engineering",  "Architectural brilliance & natural beauty",],
   },
   {
     id: 2,
@@ -60,7 +60,7 @@ const floorPlans: Array<floorPlan> = [
     beds: 4,
     price: "₹2.42 Cr",
     image: "/plan03.jpg",
-    carParks: 3,
+    carParks: 2,
     features: [
       "Luxurious 4 BHK",
       "At Hadapsar, Pune",
@@ -74,7 +74,7 @@ const floorPlans: Array<floorPlan> = [
     beds: 4.5,
     price: "₹2.62 Cr",
     image: "/plan04.jpg",
-    carParks: 3,
+    carParks: 2,
     features: [
       "Premium Couplet",
       "At Hadapsar, Pune",
@@ -83,12 +83,12 @@ const floorPlans: Array<floorPlan> = [
   },
   {
     id: 5,
-    name: "5.5 BHK (Couplet)",
+    name: "6.5 BHK (Couplet)",
     size: "2470 sq. ft.",
-    beds: 5.5,
+    beds: 6.5,
     price: "₹3.45 Cr",
     image: "/plan05.jpg",
-    carParks: 3,
+    carParks: 4,
     features: [
       "Ultimate Couplet",
       "At Hadapsar, Pune",
@@ -197,7 +197,7 @@ export default function FloorPlanSection() {
                           <span className="text-2xl font-bold text-primary">₹2.42 Cr</span>
                         </td>
                         <td className="p-6 text-center">
-                          <Badge variant="secondary" className="text-lg px-4 py-2">3</Badge>
+                          <Badge variant="secondary" className="text-lg px-4 py-2">2</Badge>
                         </td>
                       </tr>
                       <tr className="hover:bg-primary/5 transition-colors">
@@ -207,7 +207,7 @@ export default function FloorPlanSection() {
                           <span className="text-2xl font-bold text-primary">₹2.62 Cr</span>
                         </td>
                         <td className="p-6 text-center">
-                          <Badge variant="secondary" className="text-lg px-4 py-2">3</Badge>
+                          <Badge variant="secondary" className="text-lg px-4 py-2">2</Badge>
                         </td>
                       </tr>
                       <tr className="hover:bg-primary/5 transition-colors">
@@ -217,7 +217,7 @@ export default function FloorPlanSection() {
                           <span className="text-2xl font-bold text-primary">₹3.45 Cr</span>
                         </td>
                         <td className="p-6 text-center">
-                          <Badge variant="secondary" className="text-lg px-4 py-2">3</Badge>
+                          <Badge variant="secondary" className="text-lg px-4 py-2">4</Badge>
                         </td>
                       </tr>
                     </tbody>
