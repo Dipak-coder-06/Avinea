@@ -37,7 +37,7 @@ export default function Footer() {
     {
       id: "config",
       question: "What is the configuration and carpet area of the apartments?",
-      answer: "Vyom Sigma Avinea offers a variety of configurations ranging from 2 BHK, 3 BHK, 4 BHK, and 5 BHK. The carpet areas range from 940 sq. ft. to 2500 sq. ft., catering to diverse needs for different family sizes."
+      answer: "Vyom Sigma Avinea offers a variety of configurations ranging from 2 BHK, 3 BHK, 4 BHK, 5 BHK and 6.5 BHK . The carpet areas range from 940 sq. ft. to 2500+ sq. ft., catering to diverse needs for different family sizes."
     },
     {
       id: "amenities",
