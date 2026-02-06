@@ -2,7 +2,8 @@
 
 import type React from "react"
 import { useState, useEffect, useContext, useRef } from "react"
-import { X, Info, Phone, Mail, User, IndianRupee, Sparkle } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import { X, Info, Phone, Mail, User, IndianRupee, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -24,24 +25,33 @@ export default function DiscountPopup({ isSubmitted, setIsSubmitted }: isSubmitP
   const [phone, setPhone] = useState("")
   const [errors, setErrors] = useState({ name: "", email: "", phone: "", recaptcha: "" })
   const [showTooltip, setShowTooltip] = useState(false)
+
   const { setAuthenticated } = useContext(context)
+
   const recaptchaRef = useRef<ReCAPTCHA>(null)
-  const [isTransitioning, setIsTransitioning] = useState(false)
+  const tooltipRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    checkIfSubmitted(setIsSubmitted).catch((err) => {})
+    checkIfSubmitted(setIsSubmitted).catch((err) => console.log(err))
   }, [setIsSubmitted])
+
+  // Handle outside clicks for the Info Tooltip
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
+        setShowTooltip(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
 
   useEffect(() => {
     if (isSubmitted) return
-    const showPopup = () => {
-      setIsVisible(true)
-      setTimeout(() => setIsTransitioning(true), 50)
-    }
-
+    const showPopup = () => setIsVisible(true)
     const initialTimer = setTimeout(showPopup, 20000)
     const recurringTimer = setInterval(() => {
-      if (!isSubmitted) showPopup()
+      if (!isSubmitted) setIsVisible(true)
     }, 20000)
 
     return () => {
@@ -50,10 +60,7 @@ export default function DiscountPopup({ isSubmitted, setIsSubmitted }: isSubmitP
     }
   }, [isSubmitted])
 
-  const handleClose = () => {
-    setIsTransitioning(false)
-    setTimeout(() => setIsVisible(false), 300)
-  }
+  const handleClose = () => setIsVisible(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -72,15 +79,17 @@ export default function DiscountPopup({ isSubmitted, setIsSubmitted }: isSubmitP
         loading: "processing...",
         success: () => {
           setIsSubmitted(true)
-          handleClose()
+          setIsVisible(false)
           setAuthenticated(true)
           setName("")
           setPhone("")
           setEmail("")
           recaptchaRef.current?.reset()
+
           const whatsappNumber = "9657119798"
-          const message = `Hi, I want to enquire about Vyom Sigma Avinea Hadapsar Project.%0AName: ${name}%0AEmail: ${email}%0APhone: ${phone}`
+          const message = `Hi, I want to enquire about Godrej Properties.%0AName: ${name}%0AEmail: ${email}%0APhone: ${phone}`
           window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank")
+
           return "success"
         },
         error: (err) => `${err.toString()}`,
@@ -88,226 +97,217 @@ export default function DiscountPopup({ isSubmitted, setIsSubmitted }: isSubmitP
     )
   }
 
-  if (isSubmitted || !isVisible) return null
-
-  const modalClasses = `
-    bg-gradient-to-br from-white to-slate-50/90 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-[95vw] sm:max-w-xl md:max-w-4xl relative border border-white/60 
-    flex flex-col md:flex-row 
-    transform transition-all duration-500 ease-out
-    ${isTransitioning ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}
-    before:content-[''] before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-r 
-    before:from-blue-500/10 before:to-purple-500/10 before:backdrop-blur-sm before:shadow-inner
-  `
-  
-  const overlayClasses = `
-    fixed inset-0 min-h-screen bg-gradient-to-br from-slate-900/75 to-black/60 backdrop-blur-md z-50 flex items-center justify-center p-2 xs:p-4 
-    transition-all duration-500 ease-out
-    ${isTransitioning ? 'opacity-100' : 'opacity-0'}
-  `
-
-  const closeBtnClasses = "group fixed top-6 right-6 z-[99] p-3 rounded-2xl bg-white/95 hover:bg-white/100 backdrop-blur-xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 active:scale-95 border border-slate-200/70 hover:border-slate-300 md:absolute md:top-3 md:right-3 md:z-10"
+  if (isSubmitted) return null
 
   return (
-    <div className={overlayClasses} onClick={handleClose}>
-      <div className={modalClasses} onClick={(e) => e.stopPropagation()}>
-        <button
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 min-h-screen bg-black/60 backdrop-blur-md z-[999] flex items-center justify-center p-2"
           onClick={handleClose}
-          className={closeBtnClasses}
         >
-          <X className="w-6 h-6 text-slate-700 group-hover:text-slate-900 transition-all duration-200" />
-        </button>
+          {/* ✅ CRITICAL: Fix reCAPTCHA Puzzle Popup Responsiveness */}
+          <style jsx global>{`
+            @media screen and (max-width: 500px) {
+              /* reCAPTCHA popup wrapper */
+              div[style*="z-index: 2000000000"] {
+                width: 96vw !important;
+                max-width: 96vw !important;
+                left: 50% !important;
+                right: auto !important;
+                transform: translateX(-50%) scale(0.85) !important;
+                transform-origin: top center !important;
+                top: 6% !important;
+              }
 
-        {/* Modal Content */}
-        <div className="flex-1 h-full overflow-y-auto max-h-[90vh] flex flex-col md:flex-row">
-          {/* Info Tooltip */}
-          <div className="absolute top-4 left-4 z-20">
-            <div
-              onMouseEnter={() => setShowTooltip(true)}
-              onMouseLeave={() => setShowTooltip(false)}
-              onClick={() => setShowTooltip((prev) => !prev)}
-              className="group relative"
+              /* reCAPTCHA puzzle iframe */
+              iframe[title="recaptcha challenge"] {
+                width: 96vw !important;
+                max-width: 96vw !important;
+                height: 82vh !important;
+                max-height: 82vh !important;
+                border-radius: 14px !important;
+              }
+
+              /* prevent horizontal scroll */
+              body {
+                overflow-x: hidden !important;
+              }
+            }
+          `}</style>
+
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ type: "spring", duration: 0.4 }}
+            className="bg-card rounded-[2.5rem] shadow-2xl w-full max-w-[98%] xs:max-w-[95%] md:max-w-4xl relative border border-border/50 flex flex-col md:flex-row overflow-hidden max-h-[94vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={handleClose}
+              className="absolute top-4 right-4 z-[110] p-2.5 rounded-2xl bg-background/80 hover:bg-background transition-all shadow-md active:scale-90"
             >
-              <div className="p-3 rounded-2xl bg-white/95 hover:bg-white/100 shadow-xl hover:shadow-2xl backdrop-blur-xl cursor-pointer 
-              transition-all duration-300 group-hover:scale-110 hover:-translate-y-1 border border-slate-200/70 hover:border-slate-300">
-                <Info className="w-5 h-5 text-slate-700 group-hover:text-slate-900 transition-colors" />
+              <X className="w-5 h-5 text-foreground" />
+            </button>
+
+            <div className="flex-1 h-full overflow-y-auto flex flex-col md:flex-row scrollbar-hide">
+              {/* Info Tooltip */}
+              <div className="absolute top-4 left-4 z-50" ref={tooltipRef}>
+                <div className="relative">
+                  <div
+                    onClick={() => setShowTooltip((prev) => !prev)}
+                    className="p-2.5 rounded-2xl bg-background/80 hover:bg-background shadow-md cursor-pointer transition-colors"
+                  >
+                    <Info className="w-5 h-5 text-foreground" />
+                  </div>
+                  <AnimatePresence>
+                    {showTooltip && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="absolute top-14 left-0 w-64 bg-card border border-border rounded-2xl shadow-2xl p-5 text-xs text-foreground z-[120]"
+                      >
+                        <h4 className="font-bold mb-3 text-primary text-sm">Terms & Conditions</h4>
+                        <ul className="list-disc pl-4 space-y-2 font-medium">
+                          <li>Exclusive luxury offer valid for a limited time.</li>
+                          <li>Personalized coupon code — valid for 7 days.</li>
+                          <li>Use or mention the code at the Godrej site office.</li>
+                        </ul>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
 
-              {showTooltip && (
-                <div className="absolute top-14 left-0 w-72 bg-white/98 border border-slate-200/70 backdrop-blur-xl rounded-2xl shadow-2xl 
-                p-5 text-sm text-slate-700 z-30 animate-pulse">
-                  <div className="absolute -top-2 left-4 w-4 h-4 bg-white/98 rotate-45 border-b border-r border-slate-200/70"></div>
-                  <h4 className="font-bold text-lg text-slate-900 mb-3 flex items-center gap-2">
-                    📋 Terms & Conditions
-                  </h4>
-                  <ul className="list-disc pl-5 space-y-2 text-xs leading-relaxed">
-                    <li className="text-emerald-700 font-medium">• Instant discount over final lowest price</li>
-                    <li className="text-emerald-700 font-medium">• Valid 7 days from receipt</li>
-                    <li className="text-emerald-700 font-medium">• Use code or mention at reception</li>
-                    <li className="text-emerald-700 font-medium">• Unique code only for you</li>
-                    <li className="text-emerald-700 font-medium">• Flexible - inform us of changes</li>
-                  </ul>
-                </div>
-              )}
-            </div>
-          </div>
+              {/* Left Side - Form Area */}
+              <div className="flex-[1.4] p-6 sm:p-10 flex flex-col justify-center order-2 md:order-1 bg-muted/30 backdrop-blur-sm">
+                <div className="max-w-sm mx-auto w-full pt-10 md:pt-0">
+                  <div className="text-center md:text-left mb-8">
+                    <h2 className="text-2xl sm:text-3xl font-black text-primary mb-2 tracking-tight">
+                      Exclusive Privilege
+                    </h2>
+                    <p className="text-muted-foreground text-sm font-semibold">
+                      Get your personalized offer via WhatsApp
+                    </p>
+                  </div>
 
-          {/* Left Side - Form */}
-          <div className="flex-1 p-6 sm:p-8 md:p-10 flex flex-col justify-center order-2 md:order-1 bg-gradient-to-b from-white/90 to-white/70">
-            <div className="max-w-sm mx-auto w-full">
-              <div className="text-center mb-8">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 
-                bg-clip-text text-transparent mb-3 drop-shadow-lg">
-                  🎉 Exclusive Offer
-                </h2>
-                <p className="text-slate-600 text-sm sm:text-base font-semibold bg-gradient-to-r from-slate-500 to-slate-600 bg-clip-text">
-                  Secure your <span className="font-black text-blue-600">personalized</span> coupon code
-                </p>
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="space-y-1.5">
+                      <Label htmlFor="name" className="text-[11px] font-black uppercase text-muted-foreground ml-1">
+                        Full Name *
+                      </Label>
+                      <div className="relative group">
+                        <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                        <Input
+                          id="name"
+                          type="text"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          placeholder="Enter your name"
+                          className="pl-12 h-12 md:h-13 border-2 border-border/50 rounded-2xl bg-background focus:border-primary w-full font-semibold overflow-hidden text-ellipsis"
+                        />
+                      </div>
+                      {errors.name && <p className="text-destructive text-[10px] font-bold ml-1">{errors.name}</p>}
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <Label htmlFor="phone" className="text-[11px] font-black uppercase text-muted-foreground ml-1">
+                        Phone Number *
+                      </Label>
+                      <div className="relative group">
+                        <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                        <Input
+                          id="phone"
+                          type="tel"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
+                          placeholder="10-digit mobile number"
+                          className="pl-12 h-12 md:h-13 border-2 border-border/50 rounded-2xl bg-background focus:border-primary w-full font-semibold"
+                          maxLength={10}
+                        />
+                      </div>
+                      {errors.phone && <p className="text-destructive text-[10px] font-bold ml-1">{errors.phone}</p>}
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <Label htmlFor="email" className="text-[11px] font-black uppercase text-muted-foreground ml-1">
+                        Email Address *
+                      </Label>
+                      <div className="relative group">
+                        <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                        <Input
+                          id="email"
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="email@example.com"
+                          className="pl-12 h-12 md:h-13 border-2 border-border/50 rounded-2xl bg-background focus:border-primary w-full font-semibold"
+                        />
+                      </div>
+                      {errors.email && <p className="text-destructive text-[10px] font-bold ml-1">{errors.email}</p>}
+                    </div>
+
+                    {/* ✅ Checkbox reCAPTCHA (kept same) */}
+                    <div className="flex flex-col items-center md:items-start py-2">
+                      <div className="origin-left transform scale-[0.85] xs:scale-[0.9] sm:scale-100 overflow-hidden rounded-xl border border-border/50">
+                        <ReCAPTCHA
+                          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
+                          ref={recaptchaRef}
+                        />
+                      </div>
+                      {errors.recaptcha && (
+                        <p className="text-destructive text-[10px] font-bold mt-2 ml-1">{errors.recaptcha}</p>
+                      )}
+                    </div>
+
+                    <Button
+                      type="submit"
+                      className="w-full h-12 md:h-14 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground font-black text-lg rounded-2xl shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2"
+                    >
+                      Get Offer Now
+                      <Sparkles className="w-5 h-5" />
+                    </Button>
+                  </form>
+                </div>
               </div>
-              
-              <form onSubmit={handleSubmit} className="space-y-5">
-                {/* Name Field */}
-                <div className="group">
-                  <Label htmlFor="name" className="text-sm font-bold text-slate-900 mb-2 block flex items-center gap-2">
-                    <User className="w-4 h-4 text-blue-500 shrink-0" />
-                    Full Name *
-                  </Label>
-                  <div className="relative">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 
-                    group-focus-within:text-blue-500 transition-all duration-200" />
-                    <Input
-                      id="name"
-                      type="text"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="Enter your full name"
-                      className="pl-12 h-14 text-lg border-2 border-slate-200/70 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 
-                      text-slate-900 placeholder-slate-400 bg-white/80 backdrop-blur-sm w-full transition-all duration-300 
-                      hover:border-slate-300 hover:shadow-lg rounded-2xl font-semibold shadow-sm"
-                      autoComplete="name"
-                    />
-                  </div>
-                  {errors.name && <p className="text-red-500 text-sm mt-2 font-semibold flex items-center gap-2">{errors.name}</p>}
-                </div>
 
-                {/* Email Field */}
-                <div className="group">
-                  <Label htmlFor="email" className="text-sm font-bold text-slate-900 mb-2 block flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-emerald-500 shrink-0" />
-                    Email Address *
-                  </Label>
-                  <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 
-                    group-focus-within:text-emerald-500 transition-all duration-200" />
-                    <Input
-                      id="email"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="your.email@example.com"
-                      className="pl-12 h-14 text-lg border-2 border-slate-200/70 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 
-                      text-slate-900 placeholder-slate-400 bg-white/80 backdrop-blur-sm w-full transition-all duration-300 
-                      hover:border-slate-300 hover:shadow-lg rounded-2xl font-semibold shadow-sm"
-                      autoComplete="email"
-                    />
-                  </div>
-                  {errors.email && <p className="text-red-500 text-sm mt-2 font-semibold flex items-center gap-2">{errors.email}</p>}
-                </div>
-
-                {/* Phone Field */}
-                <div className="group">
-                  <Label htmlFor="phone" className="text-sm font-bold text-slate-900 mb-2 block flex items-center gap-2">
-                    <Phone className="w-4 h-4 text-orange-500 shrink-0" />
-                    Phone Number *
-                  </Label>
-                  <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 
-                    group-focus-within:text-orange-500 transition-all duration-200" />
-                    <Input
-                      id="phone"
-                      type="tel"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder="10 digit mobile number"
-                      className="pl-12 h-14 text-lg border-2 border-slate-200/70 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 
-                      text-slate-900 placeholder-slate-400 bg-white/80 backdrop-blur-sm w-full transition-all duration-300 
-                      hover:border-slate-300 hover:shadow-lg rounded-2xl font-semibold shadow-sm"
-                      maxLength={10}
-                      autoComplete="tel"
-                    />
-                  </div>
-                  {errors.phone && <p className="text-red-500 text-sm mt-2 font-semibold flex items-center gap-2">{errors.phone}</p>}
-                </div>
-
-                {/* 🔥 FIXED reCAPTCHA - ONLY THIS CHANGED */}
-                <div className="pt-1 relative z-[9999] p-4 bg-white rounded-xl shadow-xl border">
-                  <ReCAPTCHA sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""} ref={recaptchaRef} />
-                </div>
-                {errors.recaptcha && <p className="text-red-500 text-sm mt-2 font-semibold flex items-center gap-2">{errors.recaptcha}</p>}
-
-                {/* Submit Button */}
-                <Button
-                  type="submit"
-                  className="w-full h-14 text-xl font-black bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 
-                  hover:from-slate-800 hover:via-blue-800 hover:to-slate-800 hover:shadow-2xl hover:-translate-y-1 
-                  active:bg-slate-700 active:translate-y-0 shadow-xl transition-all duration-300 text-white rounded-2xl ring-4 ring-transparent 
-                  hover:ring-blue-500/30 backdrop-blur-sm flex items-center justify-center gap-2"
-                >
-                  ✨ Get Your Offer
-                </Button>
-              </form>
-            </div>
-          </div>
-
-          {/* Right Side - Offer Section */}
-          <div className="flex-1 bg-gradient-to-br from-slate-900 via-blue-900/95 to-slate-900 relative overflow-y-auto order-1 md:order-2 
-          h-64 sm:h-80 md:h-auto rounded-3xl shadow-2xl before:absolute before:inset-0 before:bg-gradient-to-t 
-          before:from-slate-900/40 before:to-transparent before:rounded-3xl before:backdrop-blur-sm">
-            <div className="relative h-full flex flex-col items-center justify-center p-8 sm:p-10 md:p-12 text-white">
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-black mb-8 bg-gradient-to-r from-blue-300 via-white to-emerald-300 
-              bg-clip-text text-transparent drop-shadow-2xl tracking-tight">
-                Our Promise
-              </h3>
-              <div className="space-y-6 w-full max-w-sm">
-                <div className="group flex items-center p-6 bg-white/10 backdrop-blur-xl rounded-2xl hover:bg-white/20 
-                hover:shadow-2xl hover:-translate-y-2 transition-all duration-400 border border-white/30">
-                  <div className="w-16 h-16 bg-blue-500/20 backdrop-blur-xl rounded-2xl flex items-center justify-center mr-4 
-                  shrink-0 border-2 border-blue-400/50 group-hover:scale-110 group-hover:border-blue-300">
-                    <Phone className="w-8 h-8 text-blue-300" />
-                  </div>
-                  <div>
-                    <p className="text-xl font-bold text-white mb-1 group-hover:text-blue-300">Instant Callback</p>
-                    <p className="text-blue-100 text-sm font-medium">Within 5 minutes</p>
-                  </div>
-                </div>
-
-                <div className="group flex items-center p-6 bg-white/10 backdrop-blur-xl rounded-2xl hover:bg-white/20 
-                hover:shadow-2xl hover:-translate-y-2 transition-all duration-400 border border-white/30">
-                  <div className="w-16 h-16 bg-emerald-500/20 backdrop-blur-xl rounded-2xl flex items-center justify-center mr-4 
-                  shrink-0 border-2 border-emerald-400/50 group-hover:scale-110 group-hover:border-emerald-300">
-                    <User className="w-8 h-8 text-emerald-300" />
-                  </div>
-                  <div>
-                    <p className="text-xl font-bold text-white mb-1 group-hover:text-emerald-300">Free Site Visit</p>
-                    <p className="text-blue-100 text-sm font-medium">Premium transport included</p>
-                  </div>
-                </div>
-
-                <div className="group flex items-center p-6 bg-white/10 backdrop-blur-xl rounded-2xl hover:bg-white/20 
-                hover:shadow-2xl hover:-translate-y-2 transition-all duration-400 border border-white/30">
-                  <div className="w-16 h-16 bg-orange-500/20 backdrop-blur-xl rounded-2xl flex items-center justify-center mr-4 
-                  shrink-0 border-2 border-orange-400/50 group-hover:scale-110 group-hover:border-orange-300">
-                    <IndianRupee className="w-8 h-8 text-orange-300" />
-                  </div>
-                  <div>
-                    <p className="text-xl font-bold text-white mb-1 group-hover:text-orange-300">Lowest Price</p>
-                    <p className="text-blue-100 text-sm font-medium">Guaranteed best offer</p>
-                  </div>
+              {/* Right Side - Features */}
+              <div className="flex-1 bg-slate-900 p-8 text-white flex flex-col justify-center order-1 md:order-2 relative overflow-hidden">
+                <div className="absolute inset-0 bg-primary/10 mix-blend-overlay"></div>
+                <h3 className="text-xl md:text-2xl font-black mb-8 text-secondary text-center md:text-left relative z-10">
+                  Our Promise
+                </h3>
+                <div className="space-y-4 w-full max-w-xs mx-auto md:mx-0 relative z-10">
+                  {[
+                    { icon: Phone, title: "Instant Callback", sub: "Within 5 minutes", color: "text-blue-400" },
+                    { icon: User, title: "Free Site Visit", sub: "Premium car pickup", color: "text-emerald-400" },
+                    { icon: IndianRupee, title: "Best Price", sub: "Guaranteed offer", color: "text-orange-400" },
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center p-4 bg-white/5 rounded-[1.5rem] border border-white/10 group"
+                    >
+                      <div className="w-11 h-11 rounded-2xl flex items-center justify-center mr-4 bg-white/5 border border-white/10">
+                        <item.icon className={`w-5 h-5 ${item.color}`} />
+                      </div>
+                      <div>
+                        <p className="text-sm font-black text-white leading-tight">{item.title}</p>
+                        <p className="text-[10px] text-slate-400 font-bold mt-0.5">{item.sub}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }
