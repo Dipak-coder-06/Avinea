@@ -12,7 +12,7 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel"
-import { Grid3X3, Play } from "lucide-react"
+import { Grid3X3, Play, Download, Calendar, MapPin, Maximize2 } from "lucide-react"
 import context from "@/lib/context"
 import FloorPlanImage from "./FloorPlanImage"
 
@@ -37,7 +37,7 @@ const floorPlans: Array<floorPlan> = [
     price: "₹1.29 Cr - ₹1.31 Cr",
     image: "/plan01.jpg",
     carParks: 1,
-    features: ["In Hadapsar, Pune", "Masterful engineering"],
+    features: ["In Hadapsar, Pune", "Masterful engineering", "Architectural brilliance"],
   },
   {
     id: 2,
@@ -47,11 +47,7 @@ const floorPlans: Array<floorPlan> = [
     price: "₹1.69 Cr - ₹1.90 Cr",
     image: "/plan02.jpg",
     carParks: 2,
-    features: [
-      "Luxurious 3 BHK",
-      "At Hadapsar, Pune",
-      "Masterful blend of privacy and community",
-    ],
+    features: ["Luxurious 3 BHK", "At Hadapsar, Pune", "Privacy and community"],
   },
   {
     id: 3,
@@ -60,40 +56,28 @@ const floorPlans: Array<floorPlan> = [
     beds: 4,
     price: "₹2.42 Cr",
     image: "/plan03.jpg",
-    carParks: 3,
-    features: [
-      "Luxurious 4 BHK",
-      "At Hadapsar, Pune",
-      "Architectural brilliance & natural beauty",
-    ],
+    carParks: 2,
+    features: ["Luxurious 4 BHK", "At Hadapsar, Pune", "Natural beauty"],
   },
   {
     id: 4,
-    name: "4.5 BHK (Couplet)",
+    name: "4.5 BHK",
     size: "1940 sq. ft.",
     beds: 4.5,
     price: "₹2.62 Cr",
     image: "/plan04.jpg",
-    carParks: 3,
-    features: [
-      "Premium Couplet",
-      "At Hadapsar, Pune",
-      "Spacious luxury living",
-    ],
+    carParks: 2,
+    features: ["Premium Couplet", "Spacious luxury", "At Hadapsar"],
   },
   {
     id: 5,
-    name: "5.5 BHK (Couplet)",
+    name: "6.5 BHK",
     size: "2470 sq. ft.",
-    beds: 5.5,
+    beds: 6.5,
     price: "₹3.45 Cr",
     image: "/plan05.jpg",
-    carParks: 3,
-    features: [
-      "Ultimate Couplet",
-      "At Hadapsar, Pune",
-      "Unparalleled luxury",
-    ],
+    carParks: 4,
+    features: ["Ultimate Couplet", "Unparalleled luxury", "Pune East"],
   }
 ]
 
@@ -102,7 +86,6 @@ export default function FloorPlanSection() {
   const [viewMode, setViewMode] = useState<"grid" | "carousel">("carousel")
   const [api, setApi] = useState<CarouselApi>()
   const { isAuthenticated } = useContext(context)
-
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
@@ -111,303 +94,208 @@ export default function FloorPlanSection() {
 
   useEffect(() => {
     if (!api || viewMode !== "carousel") return
-
-    const interval = setInterval(() => {
-      api.scrollNext()
-    }, 5000)
-
+    const interval = setInterval(() => { api.scrollNext() }, 5000)
     return () => clearInterval(interval)
   }, [api, viewMode])
 
   const openWhatsApp = (message: string) => {
-    window.open(
-      `https://wa.me/9657119798?text=${encodeURIComponent(message)}`,
-      "_blank"
-    )
+    window.open(`https://wa.me/9657119798?text=${encodeURIComponent(message)}`, "_blank")
   }
 
-  const headerEntranceClasses = `text-center mb-16 transition-all duration-700 ease-out 
-    ${isMounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`
-  
-  const contentEntranceClasses = `transition-opacity duration-500 
-    ${isMounted ? 'opacity-100' : 'opacity-0'}`
-
   return (
-    <section id="floor-plan" className="py-20 bg-muted/30">
+    <section id="floor-plan" className="py-12 md:py-24 bg-muted/30">
       <div className="container mx-auto px-4">
-        {/* Pricing Configurations Table */}
-        <div className={`${headerEntranceClasses} mb-20`}>
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6 text-balance">
-              🏢 Configurations & Pricing (All-Inclusive)
+        
+        {/* --- PRICING TABLE SECTION --- */}
+        <div className={`mb-16 md:mb-24 transition-all duration-700 ${isMounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-3xl md:text-5xl font-bold text-primary mb-4">
+              🏢 Pricing & Configurations
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              All prices include car parking. Limited units available at these prices.
+            <p className="text-muted-foreground max-w-2xl mx-auto px-4">
+              All-inclusive pricing with car parking. Valid for a limited time.
             </p>
           </div>
           
-          <div className="max-w-4xl mx-auto overflow-x-auto">
-            <Card className="shadow-lg border-primary/20">
-              <CardContent className="p-0">
-                <div className="overflow-hidden">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="bg-gradient-to-r from-primary/10 to-primary/20 border-b-2 border-primary/30">
-                        <th className="text-left p-6 font-bold text-xl text-primary uppercase tracking-wider">
-                          Configuration
-                        </th>
-                        <th className="text-center p-6 font-bold text-xl text-primary uppercase tracking-wider">
-                          Carpet Area
-                        </th>
-                        <th className="text-center p-6 font-bold text-xl text-primary uppercase tracking-wider">
-                          Price
-                        </th>
-                        <th className="text-center p-6 font-bold text-xl text-primary uppercase tracking-wider">
-                          Car Parks
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="border-b hover:bg-primary/5 transition-colors">
-                        <td className="p-6 font-semibold text-lg">2 BHK</td>
-                        <td className="p-6 text-center font-mono text-lg">946/960 sq. ft.</td>
-                        <td className="p-6 text-center">
-                          <span className="text-2xl font-bold text-primary">₹1.29 Cr</span>
-                          <div className="text-sm text-muted-foreground">/ ₹1.31 Cr</div>
+          <Card className="max-w-5xl mx-auto shadow-xl border-primary/10 overflow-hidden">
+            <CardContent className="p-0">
+              {/* Desktop Table View */}
+              <div className="hidden md:block">
+                <table className="w-full text-left">
+                  <thead className="bg-primary/5 border-b border-primary/10">
+                    <tr>
+                      <th className="p-6 font-bold text-primary uppercase text-xs tracking-wider">Type</th>
+                      <th className="p-6 font-bold text-primary uppercase text-xs tracking-wider">Carpet Area</th>
+                      <th className="p-6 font-bold text-primary uppercase text-xs tracking-wider">Parking</th>
+                      <th className="p-6 font-bold text-primary uppercase text-xs tracking-wider text-right">Starting Price</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-primary/5">
+                    {floorPlans.map((plan) => (
+                      <tr key={plan.id} className="hover:bg-primary/[0.02] transition-colors">
+                        <td className="p-6 font-bold text-lg">{plan.name}</td>
+                        <td className="p-6 font-mono text-muted-foreground">{plan.size}</td>
+                        <td className="p-6">
+                           <Badge variant="secondary">{plan.carParks} Space{plan.carParks! > 1 ? 's' : ''}</Badge>
                         </td>
-                        <td className="p-6 text-center">
-                          <Badge variant="secondary" className="text-lg px-4 py-2">1</Badge>
+                        <td className="p-6 text-right">
+                          <span className="text-2xl font-black text-primary">{plan.price.split(' - ')[0]}</span>
                         </td>
                       </tr>
-                      <tr className="border-b hover:bg-primary/5 transition-colors">
-                        <td className="p-6 font-semibold text-lg">3 BHK</td>
-                        <td className="p-6 text-center font-mono text-lg">1213/1375 sq. ft.</td>
-                        <td className="p-6 text-center">
-                          <span className="text-2xl font-bold text-primary">₹1.69 Cr</span>
-                          <div className="text-sm text-muted-foreground">/ ₹1.90 Cr</div>
-                        </td>
-                        <td className="p-6 text-center">
-                          <Badge variant="secondary" className="text-lg px-4 py-2">2</Badge>
-                        </td>
-                      </tr>
-                      <tr className="border-b hover:bg-primary/5 transition-colors">
-                        <td className="p-6 font-semibold text-lg">4 BHK</td>
-                        <td className="p-6 text-center font-mono text-lg">1780 sq. ft.</td>
-                        <td className="p-6 text-center">
-                          <span className="text-2xl font-bold text-primary">₹2.42 Cr</span>
-                        </td>
-                        <td className="p-6 text-center">
-                          <Badge variant="secondary" className="text-lg px-4 py-2">3</Badge>
-                        </td>
-                      </tr>
-                      <tr className="hover:bg-primary/5 transition-colors">
-                        <td className="p-6 font-semibold text-lg">4.5 BHK (Couplet)</td>
-                        <td className="p-6 text-center font-mono text-lg">1940 sq. ft.</td>
-                        <td className="p-6 text-center">
-                          <span className="text-2xl font-bold text-primary">₹2.62 Cr</span>
-                        </td>
-                        <td className="p-6 text-center">
-                          <Badge variant="secondary" className="text-lg px-4 py-2">3</Badge>
-                        </td>
-                      </tr>
-                      <tr className="hover:bg-primary/5 transition-colors">
-                        <td className="p-6 font-semibold text-lg">5.5 BHK (Couplet)</td>
-                        <td className="p-6 text-center font-mono text-lg">2470 sq. ft.</td>
-                        <td className="p-6 text-center">
-                          <span className="text-2xl font-bold text-primary">₹3.45 Cr</span>
-                        </td>
-                        <td className="p-6 text-center">
-                          <Badge variant="secondary" className="text-lg px-4 py-2">3</Badge>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </CardContent>
-            </Card>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile Card View */}
+              <div className="md:hidden divide-y divide-primary/10">
+                {floorPlans.map((plan) => (
+                  <div key={plan.id} className="p-5 flex justify-between items-center bg-card">
+                    <div className="space-y-1">
+                      <div className="font-bold text-primary text-lg">{plan.name}</div>
+                      <div className="text-xs text-muted-foreground">{plan.size}</div>
+                      <div className="text-[10px] uppercase font-semibold text-muted-foreground/70">{plan.carParks} Car Park</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-black text-primary text-xl">{plan.price.split(' - ')[0]}</div>
+                      <Badge className="text-[10px] h-5 px-1.5" variant="outline">All-In</Badge>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* --- FLOOR PLAN PREVIEW SECTION --- */}
+        <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-10">
+          <div className="max-w-xl">
+            <h3 className="text-3xl font-bold text-primary">Floor Plan Explorer</h3>
+            <p className="text-muted-foreground mt-2">Toggle between grid and carousel to explore layouts.</p>
           </div>
-        </div>
-
-        {/* Header Section */}
-        <div className={headerEntranceClasses}>
-          <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6 text-balance">
-            Thoughtfully Designed Floor Plans
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-balance">
-            Every layout is meticulously crafted to maximize space, light, and
-            functionality while maintaining the highest standards of luxury
-            living.
-          </p>
-        </div>
-
-        {/* View Toggle Buttons */}
-        <div className="flex justify-center gap-2 mb-12">
-          <Button
-            variant={viewMode === "grid" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setViewMode("grid")}
-            className="flex items-center gap-2 transition-transform active:scale-95"
-          >
-            <Grid3X3 size={16} />
-            Grid View
-          </Button>
-          <Button
-            variant={viewMode === "carousel" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setViewMode("carousel")}
-            className="flex items-center gap-2 transition-transform active:scale-95"
-          >
-            <Play size={16} />
-            Carousel
-          </Button>
+          
+          <div className="flex p-1 bg-muted rounded-lg w-full md:w-auto">
+            <Button
+              variant={viewMode === "grid" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setViewMode("grid")}
+              className="flex-1 md:px-6"
+            >
+              <Grid3X3 className="w-4 h-4 mr-2" /> Grid
+            </Button>
+            <Button
+              variant={viewMode === "carousel" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setViewMode("carousel")}
+              className="flex-1 md:px-6"
+            >
+              <Play className="w-4 h-4 mr-2" /> Carousel
+            </Button>
+          </div>
         </div>
 
         {/* GRID VIEW */}
         {viewMode === "grid" ? (
-          <div className={`grid lg:grid-cols-3 gap-8 ${contentEntranceClasses}`}>
-            {/* List Selection Column */}
-            <div className="lg:col-span-1 space-y-4">
-              {floorPlans.map((plan) => (
-                <div key={plan.id}>
-                  <Card
-                    className={`cursor-pointer transition-all duration-300 hover:shadow-lg ${
-                      selectedPlan.id === plan.id
-                        ? "ring-2 ring-primary bg-card scale-[1.02]"
-                        : "hover:bg-card/50"
-                    }`}
-                    onClick={() => {
-                      setSelectedPlan(plan)
-                      if (window.innerWidth < 1024) {
-                        const preview = document.querySelector("#floor-plan-preview")
-                        preview?.scrollIntoView({ behavior: "smooth", block: "start" })
-                      }
-                    }}
-                  >
-                    <CardContent className="p-6">
-                      <div className="flex justify-between items-start mb-3">
-                        <h3 className="text-xl font-semibold text-card-foreground">
-                          {plan.name}
-                        </h3>
-                        <Badge variant="outline">{plan.size}</Badge>
-                      </div>
-                      <div className="text-2xl font-bold text-primary mb-2">
-                        {plan.price}
-                      </div>
-                      <div className="text-muted-foreground mb-4">
-                        {plan.beds} Bed {plan.baths ? `• ${plan.baths} Bath` : ''} {plan.carParks ? `• ${plan.carParks} Car Park${plan.carParks! > 1 ? 's' : ''}` : ''}
-                      </div>
-                      <div className="space-y-1">
-                        {plan.features.map((feature) => (
-                          <div key={feature} className="text-sm text-muted-foreground">
-                            • {feature}
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
+          <div className="grid lg:grid-cols-12 gap-8">
+            {/* Image Preview - First on Mobile */}
+            <div className="lg:col-span-8 order-1 lg:order-2">
+              <Card className="overflow-hidden border-none shadow-2xl sticky top-24">
+                <div className="relative aspect-[4/3] md:aspect-video bg-muted group">
+                  <FloorPlanImage selectedPlan={selectedPlan} />
+                  <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors" />
+                  <div className="absolute top-4 right-4">
+                    <Badge className="bg-white/90 text-black hover:bg-white flex gap-1 items-center">
+                      <Maximize2 className="w-3 h-3" /> Tap to enlarge
+                    </Badge>
+                  </div>
                 </div>
-              ))}
-            </div>
-
-            {/* Preview Column */}
-            <div id="floor-plan-preview" className="lg:col-span-2">
-              <Card className="overflow-hidden h-fit sticky top-8">
-                <CardContent className="p-0 h-full flex flex-col">
-                  <div className="relative w-full h-96 bg-muted">
-                    <FloorPlanImage selectedPlan={selectedPlan} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                    <div className="absolute bottom-4 left-4 text-white text-shadow-lg">
-                      <h3 className="text-2xl font-bold">{selectedPlan.name}</h3>
-                      <p className="text-lg font-semibold">{selectedPlan.size}</p>
-                    </div>
-                  </div>
-
-                  <div className="p-6 bg-card flex-1">
-                    <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+                <CardContent className="p-6 md:p-8 bg-card">
+                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                       <div>
-                        <div className="text-3xl font-bold text-primary mb-2">
-                          {selectedPlan.price}
-                        </div>
-                        <div className="text-muted-foreground">
-                          {selectedPlan.beds} Bedroom {selectedPlan.carParks ? `• ${selectedPlan.carParks} Car Park${selectedPlan.carParks! > 1 ? 's' : ''}` : ''} • {selectedPlan.size}
+                        <h4 className="text-2xl font-bold">{selectedPlan.name} Luxury Suite</h4>
+                        <div className="flex gap-4 mt-2 text-muted-foreground text-sm">
+                          <span className="flex items-center"><MapPin className="w-4 h-4 mr-1 text-primary" /> Hadapsar</span>
+                          <span className="font-mono">{selectedPlan.size}</span>
                         </div>
                       </div>
-                      <div className="flex gap-2 w-full sm:w-auto">
-                        <Button
-                          className="bg-primary hover:bg-primary/90 flex-1 sm:flex-none"
-                          onClick={() => openWhatsApp(`Send me ${selectedPlan.name} floor plan`)}
-                        >
-                          Download Plan
+                      <div className="flex gap-3 w-full md:w-auto">
+                        <Button className="flex-1 md:flex-none shadow-lg" onClick={() => openWhatsApp(`I'm interested in ${selectedPlan.name}`)}>
+                          <Download className="w-4 h-4 mr-2" /> Brochure
                         </Button>
-                        <Button
-                          variant="outline"
-                          className="flex-1 sm:flex-none"
-                          onClick={() => openWhatsApp(`Schedule tour for me to ${selectedPlan.name}`)}
-                        >
-                          Schedule Tour
+                        <Button variant="outline" className="flex-1 md:flex-none" onClick={() => openWhatsApp(`Schedule site visit for ${selectedPlan.name}`)}>
+                           Visit
                         </Button>
                       </div>
-                    </div>
-                  </div>
+                   </div>
                 </CardContent>
               </Card>
+            </div>
+
+            {/* List Selection - Below image on Mobile */}
+            <div className="lg:col-span-4 space-y-3 order-2 lg:order-1">
+              {floorPlans.map((plan) => (
+                <div 
+                  key={plan.id}
+                  onClick={() => {
+                    setSelectedPlan(plan)
+                    if (window.innerWidth < 1024) {
+                      window.scrollTo({ top: (document.getElementById('floor-plan-preview')?.offsetTop || 0) - 100, behavior: 'smooth' });
+                    }
+                  }}
+                  className={`p-4 rounded-xl cursor-pointer border transition-all duration-300 ${
+                    selectedPlan.id === plan.id 
+                    ? "bg-primary text-primary-foreground border-primary shadow-lg scale-[1.02]" 
+                    : "bg-card hover:border-primary/50 border-border"
+                  }`}
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-lg">{plan.name}</span>
+                    <span className={selectedPlan.id === plan.id ? "text-primary-foreground/80" : "text-primary font-bold"}>
+                      {plan.price.split(' - ')[0]}
+                    </span>
+                  </div>
+                  <p className={`text-xs mt-1 ${selectedPlan.id === plan.id ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
+                    {plan.size} • {plan.carParks} Car Parks
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         ) : (
           /* CAROUSEL VIEW */
-          <div className={`relative ${contentEntranceClasses}`}>
+          <div className="relative group">
             <Carousel setApi={setApi} opts={{ align: "start", loop: true }} className="w-full">
-              <CarouselContent className="-ml-2 md:-ml-4">
+              <CarouselContent className="-ml-4">
                 {floorPlans.map((plan) => (
-                  <CarouselItem key={plan.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
-                    <Card className="overflow-hidden h-full hover:shadow-lg transition-shadow duration-300">
-                      <CardContent className="p-0">
-                        <div className="relative w-full h-64 bg-muted">
-                          <FloorPlanImage selectedPlan={plan} />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                          <div className="absolute bottom-4 left-4 text-white">
-                            <h3 className="text-xl font-bold">{plan.name}</h3>
-                            <p className="text-sm font-semibold">{plan.size}</p>
-                          </div>
-                          <Badge className="absolute top-4 right-4 bg-primary text-primary-foreground">
-                            {plan.beds} Bed {plan.carParks ? `• ${plan.carParks} Park${plan.carParks! > 1 ? 's' : ''}` : ''}
-                          </Badge>
-                        </div>
-
-                        <div className="p-6">
-                          <div className="text-2xl font-bold text-primary mb-2">{plan.price}</div>
-                          <div className="space-y-2 mb-4">
-                            {plan.features.map((feature) => (
-                              <div key={feature} className="text-sm text-muted-foreground">
-                                • {feature}
-                              </div>
-                            ))}
-                          </div>
-                          <div className="flex gap-2">
-                            <Button
-                              size="sm"
-                              className="bg-primary hover:bg-primary/90 flex-1"
-                              onClick={() => openWhatsApp(`Send me ${plan.name} floor plan`)}
-                            >
-                              Download Plan
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="flex-1 bg-transparent"
-                              onClick={() => openWhatsApp(`Schedule tour for me to ${plan.name}`)}
-                            >
-                              Schedule Tour
-                            </Button>
+                  <CarouselItem key={plan.id} className="pl-4 basis-[85%] md:basis-1/2 lg:basis-1/3">
+                    <Card className="h-full overflow-hidden border-none shadow-lg hover:shadow-2xl transition-all duration-500">
+                      <div className="relative aspect-[4/5] bg-muted">
+                        <FloorPlanImage selectedPlan={plan} />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                        <div className="absolute bottom-6 left-6 text-white">
+                          <p className="text-xs uppercase tracking-widest font-bold opacity-80 mb-1">Configuration</p>
+                          <h4 className="text-2xl font-bold">{plan.name}</h4>
+                          <div className="flex items-center gap-2 mt-2">
+                             <Badge className="bg-primary border-none text-[10px]">{plan.size}</Badge>
+                             <span className="text-xs font-semibold">{plan.carParks} Parking</span>
                           </div>
                         </div>
+                      </div>
+                      <CardContent className="p-6">
+                        <div className="text-2xl font-black text-primary mb-6">{plan.price.split(' - ')[0]}</div>
+                        <Button className="w-full" variant="secondary" onClick={() => openWhatsApp(`Details for ${plan.name}`)}>
+                          View Details
+                        </Button>
                       </CardContent>
                     </Card>
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="left-4" />
-              <CarouselNext className="right-4" />
+              {/* Desktop-only Navigation */}
+              <div className="hidden md:block">
+                <CarouselPrevious className="left-[-50px] bg-primary text-white hover:bg-primary/90" />
+                <CarouselNext className="right-[-50px] bg-primary text-white hover:bg-primary/90" />
+              </div>
             </Carousel>
           </div>
         )}
